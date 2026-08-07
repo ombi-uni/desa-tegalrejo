@@ -18,7 +18,11 @@ class VillageProfileResource extends Resource
 {
     protected static ?string $model = VillageProfile::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInformationCircle;
+
+    protected static ?string $navigationLabel = 'Profil & Visi Misi';
+
+    protected static ?string $pluralModelLabel = 'Profil & Visi Misi';
 
     public static function form(Schema $schema): Schema
     {

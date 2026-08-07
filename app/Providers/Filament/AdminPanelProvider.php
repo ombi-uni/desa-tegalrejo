@@ -28,8 +28,18 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('Panel Admin Desa Tegalrejo')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Emerald,
+            ])
+            ->resources([
+                \App\Filament\Resources\Apparatuses\ApparatusResource::class,
+                \App\Filament\Resources\Banners\BannerResource::class,
+                \App\Filament\Resources\BudgetTransparencies\BudgetTransparencyResource::class,
+                \App\Filament\Resources\News\NewsResource::class,
+                \App\Filament\Resources\Statistics\StatisticResource::class,
+                \App\Filament\Resources\Umkms\UmkmResource::class,
+                \App\Filament\Resources\VillageProfiles\VillageProfileResource::class,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

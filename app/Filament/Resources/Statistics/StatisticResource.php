@@ -18,7 +18,11 @@ class StatisticResource extends Resource
 {
     protected static ?string $model = Statistic::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChartBar;
+
+    protected static ?string $navigationLabel = 'Statistik Desa';
+
+    protected static ?string $pluralModelLabel = 'Statistik Desa';
 
     public static function form(Schema $schema): Schema
     {

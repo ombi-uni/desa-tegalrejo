@@ -18,7 +18,11 @@ class BudgetTransparencyResource extends Resource
 {
     protected static ?string $model = BudgetTransparency::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBanknotes;
+
+    protected static ?string $navigationLabel = 'Transparansi APBDES';
+
+    protected static ?string $pluralModelLabel = 'Transparansi APBDES';
 
     public static function form(Schema $schema): Schema
     {

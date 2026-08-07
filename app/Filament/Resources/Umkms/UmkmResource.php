@@ -18,7 +18,11 @@ class UmkmResource extends Resource
 {
     protected static ?string $model = Umkm::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingStorefront;
+
+    protected static ?string $navigationLabel = 'Data UMKM Desa';
+
+    protected static ?string $pluralModelLabel = 'Data UMKM Desa';
 
     public static function form(Schema $schema): Schema
     {

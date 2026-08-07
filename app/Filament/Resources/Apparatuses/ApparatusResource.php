@@ -18,7 +18,11 @@ class ApparatusResource extends Resource
 {
     protected static ?string $model = Apparatus::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
+
+    protected static ?string $navigationLabel = 'Perangkat Desa';
+
+    protected static ?string $pluralModelLabel = 'Perangkat Desa';
 
     public static function form(Schema $schema): Schema
     {
