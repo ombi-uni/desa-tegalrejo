@@ -36,7 +36,6 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Resources\Apparatuses\ApparatusResource::class,
                 \App\Filament\Resources\Banners\BannerResource::class,
                 \App\Filament\Resources\BudgetTransparencies\BudgetTransparencyResource::class,
-                \App\Filament\Resources\NavItems\NavItemResource::class,
                 \App\Filament\Resources\News\NewsResource::class,
                 \App\Filament\Resources\Statistics\StatisticResource::class,
                 \App\Filament\Resources\Umkms\UmkmResource::class,
