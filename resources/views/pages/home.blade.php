@@ -6,7 +6,7 @@
 <!-- Hero Banner Section -->
 <section class="relative bg-slate-900 text-white overflow-hidden py-20 lg:py-32">
     <div class="absolute inset-0 z-0 opacity-40 mix-blend-overlay">
-        <img src="{{ optional($banners->first())->image ?? 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80' }}" alt="Desa Tegalrejo" class="w-full h-full object-cover">
+        <img src="{{ optional($banners->first())->image_url ?? 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80' }}" alt="Desa Tegalrejo" class="w-full h-full object-cover">
     </div>
     <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/80 to-transparent z-0"></div>
 
@@ -109,7 +109,7 @@
 
             <div class="lg:col-span-7">
                 <div class="relative aspect-video rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-900 group">
-                    <iframe class="w-full h-full" src="{{ $profile->video_url ?? 'https://www.youtube.com/embed/dQw4w9WgXcQ' }}" title="Video Profil Desa Tegalrejo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe class="w-full h-full" src="{{ $profile->youtube_embed_url }}" title="Video Profil Desa Tegalrejo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
@@ -136,7 +136,7 @@
             <div class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-lg shadow-slate-200/50 hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col justify-between group">
                 <div>
                     <div class="relative h-48 overflow-hidden bg-slate-100">
-                        <img src="{{ $umkm->image ?? 'https://images.unsplash.com/photo-1566478989037-eec170784d0b?auto=format&fit=crop&w=800&q=80' }}" alt="{{ $umkm->store_name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ $umkm->image_url }}" alt="{{ $umkm->store_name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-slate-800 text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
                             {{ $umkm->category }}
                         </div>

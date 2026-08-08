@@ -68,6 +68,8 @@ class UmkmForm
                 FileUpload::make('image')
                     ->label('Foto Produk UMKM')
                     ->image()
+                    ->disk('public')
+                    ->visibility('public')
                     ->directory('umkm-images')
                     ->columnSpanFull(),
             ]);

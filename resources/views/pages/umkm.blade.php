@@ -46,7 +46,7 @@
             <div class="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col justify-between group">
                 <div>
                     <div class="relative h-56 overflow-hidden bg-slate-100">
-                        <img src="{{ $item->image ?? 'https://images.unsplash.com/photo-1566478989037-eec170784d0b?auto=format&fit=crop&w=800&q=80' }}" alt="{{ $item->store_name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ $item->image_url }}" alt="{{ $item->store_name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <span class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                             {{ $item->category }}
                         </span>

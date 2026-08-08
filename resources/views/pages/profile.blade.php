@@ -48,7 +48,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 <div class="lg:col-span-4 text-center lg:text-left space-y-4">
                     <div class="relative w-48 h-48 sm:w-60 sm:h-60 mx-auto lg:mx-0 rounded-3xl overflow-hidden shadow-xl border-4 border-lightblue-100">
-                        <img src="{{ $profile->kades_photo ?? 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80' }}" alt="{{ $profile->kades_name }}" class="w-full h-full object-cover">
+                        <img src="{{ !empty($profile->kades_photo) ? (str_starts_with($profile->kades_photo, 'http') ? $profile->kades_photo : asset('storage/' . $profile->kades_photo)) : 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80' }}" alt="{{ $profile->kades_name }}" class="w-full h-full object-cover">
                     </div>
                     <div>
                         <h3 class="text-xl font-bold text-slate-900">{{ $profile->kades_name ?? 'Bpk. H. Ahmad Slamet, S.Sos.' }}</h3>
@@ -83,7 +83,7 @@
             @foreach($apparatuses as $app)
             <div class="bg-brokenwhite rounded-2xl p-6 border border-slate-200/70 shadow-md hover:shadow-xl hover:border-lightblue-300 transition-all text-center space-y-4 group">
                 <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-300">
-                    <img src="{{ $app->photo ?? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80' }}" alt="{{ $app->name }}" class="w-full h-full object-cover">
+                    <img src="{{ $app->image_url }}" alt="{{ $app->name }}" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <h3 class="font-bold text-lg text-slate-900 group-hover:text-lightblue-600 transition-colors">{{ $app->name }}</h3>

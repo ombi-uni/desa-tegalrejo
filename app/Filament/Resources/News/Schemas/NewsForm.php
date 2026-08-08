@@ -37,6 +37,8 @@ class NewsForm
                 FileUpload::make('thumbnail')
                     ->label('Gambar Utama / Sampul')
                     ->image()
+                    ->disk('public')
+                    ->visibility('public')
                     ->directory('news-thumbnails'),
                 RichEditor::make('content')
                     ->label('Isi Berita Artikel')

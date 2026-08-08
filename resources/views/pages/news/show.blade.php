@@ -38,7 +38,7 @@
         <!-- Main Featured Image -->
         @if($article->thumbnail)
         <div class="rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 bg-slate-100 aspect-video">
-            <img src="{{ $article->thumbnail }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
+            <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
         </div>
         @endif
 

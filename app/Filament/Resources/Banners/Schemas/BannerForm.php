@@ -34,6 +34,8 @@ class BannerForm
                 FileUpload::make('image')
                     ->label('Gambar Hero Banner')
                     ->image()
+                    ->disk('public')
+                    ->visibility('public')
                     ->directory('banner-images')
                     ->columnSpanFull(),
             ]);

@@ -29,6 +29,8 @@ class VillageProfileForm
                 FileUpload::make('logo')
                     ->label('Upload Logo / Lambang Desa (Opsional)')
                     ->image()
+                    ->disk('public')
+                    ->visibility('public')
                     ->directory('village-logos')
                     ->helperText('Format .png, .jpg, atau .svg transparan.'),
                 TextInput::make('logo_icon')
@@ -40,10 +42,14 @@ class VillageProfileForm
                 FileUpload::make('kades_photo')
                     ->label('Foto Kepala Desa')
                     ->image()
+                    ->disk('public')
+                    ->visibility('public')
                     ->directory('kades-photos'),
                 TextInput::make('video_url')
-                    ->label('URL Video Profil Desa (YouTube Embed)')
-                    ->placeholder('https://www.youtube.com/embed/...'),
+                    ->label('Link / URL Video YouTube Profil Desa')
+                    ->placeholder('Contoh: https://www.youtube.com/watch?v=... atau https://youtu.be/...')
+                    ->helperText('Cukup tempel link YouTube biasa dari browser/HP. Sistem otomatis memprosesnya agar dapat diputar langsung di website tanpa perlu repot embed manual.')
+                    ->columnSpanFull(),
                 Textarea::make('visi')
                     ->label('Visi Desa')
                     ->rows(4)

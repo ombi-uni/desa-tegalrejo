@@ -31,6 +31,8 @@ class ApparatusForm
                 FileUpload::make('photo')
                     ->label('Foto Resmi Perangkat Desa')
                     ->image()
+                    ->disk('public')
+                    ->visibility('public')
                     ->directory('apparatus-photos')
                     ->columnSpanFull(),
             ]);

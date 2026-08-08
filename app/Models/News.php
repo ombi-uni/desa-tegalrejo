@@ -14,4 +14,17 @@ class News extends Model
     protected $casts = [
         'published_at' => 'datetime',
     ];
+
+    public function getImageUrlAttribute(): string
+    {
+        if (empty($this->thumbnail)) {
+            return 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80';
+        }
+
+        if (str_starts_with($this->thumbnail, 'http://') || str_starts_with($this->thumbnail, 'https://')) {
+            return $this->thumbnail;
+        }
+
+        return asset('storage/' . $this->thumbnail);
+    }
 }
