@@ -3,35 +3,145 @@
 @section('title', 'Beranda - Website Resmi Desa Tegalrejo')
 
 @section('content')
-<!-- Hero Banner Section -->
-<section class="relative bg-slate-900 text-white overflow-hidden py-24 lg:py-36">
-    <div class="absolute inset-0 z-0 opacity-40 mix-blend-overlay">
-        <img src="{{ optional($banners->first())->image_url ?? 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80' }}" alt="Desa Tegalrejo" class="w-full h-full object-cover">
-    </div>
-    <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/85 to-transparent z-0"></div>
+<!-- Hero Banner Carousel Section -->
+@php
+    $bannerList = $banners->count() > 0 ? $banners : collect([
+        (object)[
+            'image_url' => 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80',
+            'badge_text' => 'Portal Resmi Desa Tegalrejo',
+            'title' => 'Selamat Datang di Website Resmi Desa Tegalrejo',
+            'subtitle' => 'Kecamatan Tengaran, Kabupaten Semarang, Jawa Tengah. Pusat informasi publik, keterbukaan anggaran, dan katalog digital UMKM desa.',
+            'button_text' => 'Lihat Produk UMKM',
+            'button_link' => route('umkm.index'),
+            'button_secondary_text' => 'Profil & Perangkat Desa',
+            'button_secondary_link' => route('profile'),
+        ]
+    ]);
+@endphp
 
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl space-y-6">
+<section x-data="{
+    active: 0,
+    total: {{ $bannerList->count() }},
+    timer: null,
+    startAutoSlide() {
+        if (this.total > 1) {
+            this.timer = setInterval(() => {
+                this.next();
+            }, 6500);
+        }
+    },
+    stopAutoSlide() {
+        if (this.timer) {
+            clearInterval(this.timer);
+            this.timer = null;
+        }
+    },
+    next() {
+        this.active = (this.active + 1) % this.total;
+    },
+    prev() {
+        this.active = (this.active - 1 + this.total) % this.total;
+    },
+    goTo(index) {
+        this.active = index;
+    }
+}" 
+x-init="startAutoSlide()" 
+@mouseenter="stopAutoSlide()" 
+@mouseleave="startAutoSlide()" 
+class="relative bg-slate-950 text-white overflow-hidden min-h-[560px] lg:min-h-[640px] flex items-center">
+
+    @foreach($bannerList as $index => $banner)
+    <div x-show="active === {{ $index }}"
+         x-transition:enter="transition ease-out duration-700"
+         x-transition:enter-start="opacity-0 scale-105"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-500"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         class="absolute inset-0 z-0">
+        <!-- Background Hero Image -->
+        <img src="{{ $banner->image_url ?? 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80' }}" 
+             alt="{{ $banner->title ?? 'Desa Tegalrejo' }}" 
+             class="w-full h-full object-cover opacity-45 mix-blend-overlay">
+        <!-- Gradient Overlay for Optimal Text Contrast -->
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/85 to-slate-900/40"></div>
+    </div>
+    @endforeach
+
+    <!-- Banner Content Overlay -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 w-full">
+        @foreach($bannerList as $index => $banner)
+        <div x-show="active === {{ $index }}"
+             x-transition:enter="transition ease-out duration-500 delay-100"
+             x-transition:enter-start="opacity-0 translate-y-4"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-300"
+             x-transition:leave-start="opacity-100 translate-y-0"
+             x-transition:leave-end="opacity-0 -translate-y-4"
+             class="max-w-3xl space-y-6">
+
+            <!-- Tag / Badge Text -->
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-lightblue-500/20 border border-lightblue-400/30 text-lightblue-300 text-xs font-semibold uppercase tracking-wider">
-                <i class="fa-solid fa-sparkles"></i> Portal Resmi Desa Tegalrejo
+                <i class="fa-solid fa-sparkles"></i> 
+                <span>{{ $banner->badge_text ?? 'Portal Resmi Desa Tegalrejo' }}</span>
             </div>
-            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight">
-                {{ optional($banners->first())->title ?? 'Selamat Datang di Website Resmi Desa Tegalrejo' }}
+
+            <!-- Title -->
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight drop-shadow-sm">
+                {{ $banner->title ?? 'Selamat Datang di Website Resmi Desa Tegalrejo' }}
             </h1>
+
+            <!-- Subtitle -->
+            @if(!empty($banner->subtitle))
             <p class="text-base sm:text-xl text-slate-300 font-normal leading-relaxed">
-                {{ optional($banners->first())->subtitle ?? 'Kecamatan Tengaran, Kabupaten Semarang, Jawa Tengah. Pusat informasi publik, keterbukaan anggaran, dan katalog digital UMKM desa.' }}
+                {{ $banner->subtitle }}
             </p>
-            <div class="pt-4 flex flex-wrap gap-4">
-                <a href="{{ route('umkm.index') }}" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white bg-lightblue-600 hover:bg-lightblue-700 active:scale-95 transition-all shadow-lg shadow-lightblue-600/30">
-                    <span>Lihat Produk UMKM</span>
+            @endif
+
+            <!-- Action Buttons (Configured by Admin) -->
+            <div class="pt-4 flex flex-wrap gap-4 items-center">
+                @if(!empty($banner->button_text))
+                <a href="{{ $banner->button_link ?? route('umkm.index') }}" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white bg-lightblue-600 hover:bg-lightblue-700 active:scale-95 transition-all shadow-lg shadow-lightblue-600/30">
+                    <span>{{ $banner->button_text }}</span>
                     <i class="fa-solid fa-arrow-right text-sm"></i>
                 </a>
-                <a href="{{ route('profile') }}" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-slate-200 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all">
-                    <span>Profil & Perangkat Desa</span>
+                @endif
+
+                @if(!empty($banner->button_secondary_text))
+                <a href="{{ $banner->button_secondary_link ?? route('profile') }}" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-slate-200 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 active:scale-95 transition-all">
+                    <span>{{ $banner->button_secondary_text }}</span>
                 </a>
+                @endif
             </div>
         </div>
+        @endforeach
     </div>
+
+    <!-- Navigation Arrows & Slide Indicators (Only when more than 1 banner) -->
+    @if($bannerList->count() > 1)
+    <!-- Prev Arrow Button -->
+    <button @click="prev()" type="button" aria-label="Banner Sebelumnya" class="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-slate-900/60 hover:bg-lightblue-600 text-white backdrop-blur-md border border-white/10 flex items-center justify-center transition-all group shadow-lg">
+        <i class="fa-solid fa-chevron-left text-sm group-hover:-translate-x-0.5 transition-transform"></i>
+    </button>
+
+    <!-- Next Arrow Button -->
+    <button @click="next()" type="button" aria-label="Banner Selanjutnya" class="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-slate-900/60 hover:bg-lightblue-600 text-white backdrop-blur-md border border-white/10 flex items-center justify-center transition-all group shadow-lg">
+        <i class="fa-solid fa-chevron-right text-sm group-hover:translate-x-0.5 transition-transform"></i>
+    </button>
+
+    <!-- Indicators Bar at Bottom -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2.5 bg-slate-950/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+        @foreach($bannerList as $index => $banner)
+        <button @click="goTo({{ $index }})" 
+                type="button" 
+                :aria-label="'Pindah ke banner ' + ({{ $index }} + 1)"
+                class="transition-all duration-300 rounded-full h-2.5"
+                :class="active === {{ $index }} ? 'w-8 bg-lightblue-500 shadow-md shadow-lightblue-500/50' : 'w-2.5 bg-white/40 hover:bg-white/70'">
+        </button>
+        @endforeach
+    </div>
+    @endif
 </section>
 
 <!-- Statistik Desa Counter Section -->
