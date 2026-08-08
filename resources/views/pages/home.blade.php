@@ -4,11 +4,11 @@
 
 @section('content')
 <!-- Hero Banner Section -->
-<section class="relative bg-slate-900 text-white overflow-hidden py-20 lg:py-32">
+<section class="relative bg-slate-900 text-white overflow-hidden py-24 lg:py-36">
     <div class="absolute inset-0 z-0 opacity-40 mix-blend-overlay">
         <img src="{{ optional($banners->first())->image_url ?? 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80' }}" alt="Desa Tegalrejo" class="w-full h-full object-cover">
     </div>
-    <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/80 to-transparent z-0"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/85 to-transparent z-0"></div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl space-y-6">
@@ -35,7 +35,7 @@
 </section>
 
 <!-- Statistik Desa Counter Section -->
-<section class="py-12 -mt-10 relative z-20">
+<section class="py-16 lg:py-20 bg-brokenwhite border-b border-slate-200/70">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
             <!-- Counter 1: Penduduk -->

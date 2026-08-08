@@ -12,7 +12,7 @@ class VillageProfile extends Model
     protected $guarded = [];
 
     /**
-     * Otomatis mengkonversi segala jenis format link YouTube (biasa, share, shorts, embed, ataupun kode iframe)
+     * Otomatis mengkonversi segala jenis format link YouTube (biasa, share, shorts, live, embed, ataupun kode iframe)
      * menjadi URL embed yang valid dan siap tayang di website.
      */
     public function getYoutubeEmbedUrlAttribute(): string
@@ -20,29 +20,33 @@ class VillageProfile extends Model
         $url = trim($this->video_url ?? '');
 
         if (empty($url)) {
-            return 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ';
+            return 'https://www.youtube.com/embed/dQw4w9WgXcQ';
         }
 
-        // 1. Jika admin menempelkan seluruh tag <iframe src="...">
+        // 1. Jika admin menempelkan tag iframe HTML <iframe src="...">
         if (preg_match('/src=["\']([^"\']+)["\']/', $url, $matches)) {
             $url = $matches[1];
         }
 
-        // 2. Jika URL sudah berformat embed murni
+        // 2. Ekstrak Video ID 11 karakter dari segala macam URL YouTube:
+        //    - https://www.youtube.com/watch?v=tyG2UYR7JE8
+        //    - https://www.youtube.com/live/tyG2UYR7JE8
+        //    - https://www.youtube.com/shorts/tyG2UYR7JE8
+        //    - https://youtu.be/tyG2UYR7JE8
+        //    - https://www.youtube.com/embed/tyG2UYR7JE8
+        //    - https://m.youtube.com/watch?v=tyG2UYR7JE8
+        if (preg_match('/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:(?:watch\?.*?v=)|(?:embed\/)|(?:v\/)|(?:e\/)|(?:shorts\/)|(?:live\/)))([\w-]{11})/i', $url, $matches)) {
+            return 'https://www.youtube.com/embed/' . $matches[1];
+        }
+
+        // 3. Jika URL sudah diawali https://www.youtube.com/embed/
         if (str_contains($url, 'youtube.com/embed/') || str_contains($url, 'youtube-nocookie.com/embed/')) {
-            if (preg_match('/embed\/([a-zA-Z0-9_-]{11})/', $url, $matches)) {
-                return 'https://www.youtube-nocookie.com/embed/' . $matches[1];
-            }
             return $url;
         }
 
-        // 3. Tangani link YouTube standar:
-        //    - https://www.youtube.com/watch?v=VIDEO_ID
-        //    - https://youtu.be/VIDEO_ID
-        //    - https://www.youtube.com/shorts/VIDEO_ID
-        //    - https://m.youtube.com/watch?v=VIDEO_ID
-        if (preg_match('/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/i', $url, $matches)) {
-            return 'https://www.youtube-nocookie.com/embed/' . $matches[1];
+        // 4. Jika hanya diisi ID 11 karakter (contoh: tyG2UYR7JE8)
+        if (preg_match('/^[a-zA-Z0-9_-]{11}$/', $url)) {
+            return 'https://www.youtube.com/embed/' . $url;
         }
 
         return $url;
