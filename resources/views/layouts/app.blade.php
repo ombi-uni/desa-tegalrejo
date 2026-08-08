@@ -51,42 +51,70 @@
             <div class="flex items-center justify-between h-20">
                 <!-- Logo & Title -->
                 <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-                    <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-lightblue-600 to-lightblue-400 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-lightblue-500/20 group-hover:scale-105 transition-transform">
-                        <i class="fa-solid fa-tree-city"></i>
-                    </div>
+                    @if(!empty($villageProfile->logo))
+                        <img src="{{ asset('storage/' . $villageProfile->logo) }}" alt="Logo {{ $villageProfile->village_name ?? 'Desa Tegalrejo' }}" class="w-11 h-11 object-contain rounded-xl shadow-md group-hover:scale-105 transition-transform">
+                    @else
+                        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-lightblue-600 to-lightblue-400 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-lightblue-500/20 group-hover:scale-105 transition-transform">
+                            <i class="{{ $villageProfile->logo_icon ?? 'fa-solid fa-tree-city' }}"></i>
+                        </div>
+                    @endif
                     <div>
-                        <span class="block text-lg font-bold text-slate-900 leading-tight tracking-tight">Desa Tegalrejo</span>
-                        <span class="block text-xs font-medium text-lightblue-600">Kec. Tengaran, Kab. Semarang</span>
+                        <span class="block text-lg font-bold text-slate-900 leading-tight tracking-tight">{{ $villageProfile->village_name ?? 'Desa Tegalrejo' }}</span>
+                        <span class="block text-xs font-medium text-lightblue-600">{{ $villageProfile->subdistrict ?? 'Kec. Tengaran' }}, {{ $villageProfile->district ?? 'Kab. Semarang' }}</span>
                     </div>
                 </a>
 
-                <!-- Desktop Navigation Links -->
+                <!-- Desktop Dynamic Navigation Links -->
                 <nav class="hidden md:flex items-center gap-1 lg:gap-2">
-                    <a href="{{ route('home') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('home') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
-                        Beranda
-                    </a>
-                    <a href="{{ route('profile') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('profile') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
-                        Profil Desa
-                    </a>
-                    <a href="{{ route('news.index') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('news.*') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
-                        Portal Berita
-                    </a>
-                    <a href="{{ route('umkm.index') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors relative {{ request()->routeIs('umkm.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
-                        <span>Belanja UMKM</span>
-                        <span class="absolute -top-1 -right-1 bg-amber-400 text-slate-900 font-bold text-[10px] px-1.5 py-0.5 rounded-full uppercase tracking-wider">Hot</span>
-                    </a>
-                    <a href="{{ route('budget.index') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('budget.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
-                        Transparansi
-                    </a>
+                    @if(isset($navItems) && $navItems->count() > 0)
+                        @foreach($navItems as $item)
+                            @if($item->children && $item->children->count() > 0)
+                                <!-- Dropdown Menu Item -->
+                                <div x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" class="relative">
+                                    <button type="button" @click="open = !open" class="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors">
+                                        <span>{{ $item->title }}</span>
+                                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform duration-200" :class="open ? 'rotate-180 text-lightblue-600' : ''"></i>
+                                    </button>
+                                    <div x-show="open" 
+                                         x-transition:enter="transition ease-out duration-150"
+                                         x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                         x-transition:leave="transition ease-in duration-100"
+                                         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                         x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                         class="absolute left-0 top-full mt-1 w-56 bg-white rounded-2xl shadow-xl shadow-slate-900/10 border border-slate-100 py-2 z-50">
+                                        @foreach($item->children as $child)
+                                            <a href="{{ $child->url }}" target="{{ $child->target ?? '_self' }}" class="flex items-center justify-between px-4 py-2.5 text-sm text-slate-700 hover:bg-lightblue-50 hover:text-lightblue-600 transition-colors font-medium">
+                                                <span>{{ $child->title }}</span>
+                                                @if($child->badge)
+                                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-lightblue-100 text-lightblue-700">{{ $child->badge }}</span>
+                                                @endif
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @else
+                                @php
+                                    $cleanUrl = ltrim($item->url, '/');
+                                    $isCurrent = request()->is($cleanUrl) || (request()->path() === '/' && ($item->url === '/' || $cleanUrl === ''));
+                                @endphp
+                                <a href="{{ $item->url }}" target="{{ $item->target ?? '_self' }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ $isCurrent ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                                    <span>{{ $item->title }}</span>
+                                    @if($item->badge)
+                                        <span class="ml-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-lightblue-100 text-lightblue-700">{{ $item->badge }}</span>
+                                    @endif
+                                </a>
+                            @endif
+                        @endforeach
+                    @else
+                        <!-- Fallback Navigation -->
+                        <a href="{{ route('home') }}" class="px-4 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('home') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">Beranda</a>
+                        <a href="{{ route('profile') }}" class="px-4 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('profile') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">Profil Desa</a>
+                        <a href="{{ route('news.index') }}" class="px-4 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('news.*') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">Portal Berita</a>
+                        <a href="{{ route('umkm.index') }}" class="px-4 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('umkm.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">Belanja UMKM</a>
+                        <a href="{{ route('budget.index') }}" class="px-4 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('budget.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">Transparansi</a>
+                    @endif
                 </nav>
-
-                <!-- Admin Action Button -->
-                <div class="hidden md:flex items-center gap-3">
-                    <a href="/admin" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-lightblue-600 hover:bg-lightblue-700 active:scale-95 transition-all shadow-md shadow-lightblue-600/20">
-                        <i class="fa-solid fa-lock text-xs"></i>
-                        <span>Dashboard Admin</span>
-                    </a>
-                </div>
 
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
@@ -99,17 +127,35 @@
 
         <!-- Mobile Navigation Menu -->
         <div x-show="mobileMenuOpen" x-transition class="md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-2">
-            <a href="{{ route('home') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Beranda</a>
-            <a href="{{ route('profile') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Profil Desa</a>
-            <a href="{{ route('news.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Portal Berita</a>
-            <a href="{{ route('umkm.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Belanja UMKM</a>
-            <a href="{{ route('budget.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Transparansi Anggaran</a>
-            <div class="pt-3 border-t border-slate-100">
-                <a href="/admin" target="_blank" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-base font-semibold text-white bg-lightblue-600 hover:bg-lightblue-700">
-                    <i class="fa-solid fa-lock"></i>
-                    <span>Dashboard Admin</span>
-                </a>
-            </div>
+            @if(isset($navItems) && $navItems->count() > 0)
+                @foreach($navItems as $item)
+                    @if($item->children && $item->children->count() > 0)
+                        <div x-data="{ subOpen: false }" class="space-y-1">
+                            <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">
+                                <span>{{ $item->title }}</span>
+                                <i class="fa-solid fa-chevron-down text-xs transition-transform" :class="subOpen ? 'rotate-180' : ''"></i>
+                            </button>
+                            <div x-show="subOpen" class="pl-4 space-y-1 border-l-2 border-slate-100 ml-4">
+                                @foreach($item->children as $child)
+                                    <a href="{{ $child->url }}" target="{{ $child->target ?? '_self' }}" class="block px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-lightblue-50 hover:text-lightblue-600">
+                                        {{ $child->title }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @else
+                        <a href="{{ $item->url }}" target="{{ $item->target ?? '_self' }}" class="block px-4 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">
+                            {{ $item->title }}
+                        </a>
+                    @endif
+                @endforeach
+            @else
+                <a href="{{ route('home') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Beranda</a>
+                <a href="{{ route('profile') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Profil Desa</a>
+                <a href="{{ route('news.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Portal Berita</a>
+                <a href="{{ route('umkm.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Belanja UMKM</a>
+                <a href="{{ route('budget.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Transparansi Anggaran</a>
+            @endif
         </div>
     </header>
 
@@ -125,13 +171,17 @@
                 <!-- Info Desa -->
                 <div class="md:col-span-2 space-y-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-lightblue-500 flex items-center justify-center text-white font-bold text-lg">
-                            <i class="fa-solid fa-tree-city"></i>
-                        </div>
-                        <span class="text-xl font-bold text-white tracking-tight">Desa Tegalrejo</span>
+                        @if(!empty($villageProfile->logo))
+                            <img src="{{ asset('storage/' . $villageProfile->logo) }}" alt="Logo {{ $villageProfile->village_name ?? 'Desa Tegalrejo' }}" class="w-10 h-10 object-contain rounded-xl">
+                        @else
+                            <div class="w-10 h-10 rounded-xl bg-lightblue-500 flex items-center justify-center text-white font-bold text-lg">
+                                <i class="{{ $villageProfile->logo_icon ?? 'fa-solid fa-tree-city' }}"></i>
+                            </div>
+                        @endif
+                        <span class="text-xl font-bold text-white tracking-tight">{{ $villageProfile->village_name ?? 'Desa Tegalrejo' }}</span>
                     </div>
                     <p class="text-slate-400 text-sm leading-relaxed max-w-md">
-                        Website Resmi Desa Tegalrejo, Kecamatan Tengaran, Kabupaten Semarang, Jawa Tengah. Dikembangkan dalam rangka Digitalisasi Desa dan Pendampingan UMKM bersama Mahasiswa KKN.
+                        Website Resmi {{ $villageProfile->village_name ?? 'Desa Tegalrejo' }}, {{ $villageProfile->subdistrict ?? 'Kecamatan Tengaran' }}, {{ $villageProfile->district ?? 'Kabupaten Semarang' }}, Jawa Tengah. Dikembangkan dalam rangka Digitalisasi Desa dan Pendampingan UMKM bersama Mahasiswa KKN.
                     </p>
                     <div class="flex items-center gap-3 pt-2">
                         <a href="#" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-lightblue-600 text-slate-300 hover:text-white flex items-center justify-center transition-colors"><i class="fa-brands fa-facebook-f text-sm"></i></a>
@@ -145,11 +195,17 @@
                 <div class="space-y-3">
                     <h4 class="text-sm font-bold uppercase tracking-wider text-lightblue-400">Navigasi Utama</h4>
                     <ul class="space-y-2 text-sm text-slate-300">
-                        <li><a href="{{ route('home') }}" class="hover:text-lightblue-400 transition-colors">Beranda Utama</a></li>
-                        <li><a href="{{ route('profile') }}" class="hover:text-lightblue-400 transition-colors">Profil & Perangkat Desa</a></li>
-                        <li><a href="{{ route('news.index') }}" class="hover:text-lightblue-400 transition-colors">Portal Berita Terbaru</a></li>
-                        <li><a href="{{ route('umkm.index') }}" class="hover:text-lightblue-400 transition-colors">Katalog Belanja UMKM</a></li>
-                        <li><a href="{{ route('budget.index') }}" class="hover:text-lightblue-400 transition-colors">Transparansi Anggaran</a></li>
+                        @if(isset($navItems) && $navItems->count() > 0)
+                            @foreach($navItems as $item)
+                                <li><a href="{{ $item->url }}" target="{{ $item->target ?? '_self' }}" class="hover:text-lightblue-400 transition-colors">{{ $item->title }}</a></li>
+                            @endforeach
+                        @else
+                            <li><a href="{{ route('home') }}" class="hover:text-lightblue-400 transition-colors">Beranda Utama</a></li>
+                            <li><a href="{{ route('profile') }}" class="hover:text-lightblue-400 transition-colors">Profil & Perangkat Desa</a></li>
+                            <li><a href="{{ route('news.index') }}" class="hover:text-lightblue-400 transition-colors">Portal Berita Terbaru</a></li>
+                            <li><a href="{{ route('umkm.index') }}" class="hover:text-lightblue-400 transition-colors">Katalog Belanja UMKM</a></li>
+                            <li><a href="{{ route('budget.index') }}" class="hover:text-lightblue-400 transition-colors">Transparansi Anggaran</a></li>
+                        @endif
                     </ul>
                 </div>
 
@@ -159,7 +215,7 @@
                     <ul class="space-y-3 text-sm text-slate-300">
                         <li class="flex items-start gap-2.5">
                             <i class="fa-solid fa-location-dot text-lightblue-400 mt-1"></i>
-                            <span>Jl. Raya Tegalrejo No. 01, Kec. Tengaran, Kab. Semarang, Jawa Tengah 50775</span>
+                            <span>Jl. Raya Tegalrejo No. 01, {{ $villageProfile->subdistrict ?? 'Kec. Tengaran' }}, {{ $villageProfile->district ?? 'Kab. Semarang' }}, Jawa Tengah 50775</span>
                         </li>
                         <li class="flex items-center gap-2.5">
                             <i class="fa-solid fa-envelope text-lightblue-400"></i>
@@ -173,9 +229,19 @@
                 </div>
             </div>
 
+            <!-- Footer Bottom Bar with Subtle Admin Login Access -->
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-                <p>&copy; {{ date('Y') }} Pemerintah Desa Tegalrejo. Hak Cipta Dilindungi Undang-Undang.</p>
-                <p>Program Kerja KKN Mahasiswa Sistem Informasi &bull; Desa Digital Tegalrejo</p>
+                <p>&copy; {{ date('Y') }} Pemerintah {{ $villageProfile->village_name ?? 'Desa Tegalrejo' }}. Hak Cipta Dilindungi.</p>
+                
+                <div class="flex items-center gap-3">
+                    <p>Program Kerja KKN Mahasiswa &bull; Desa Digital</p>
+                    <span class="text-slate-700">|</span>
+                    <!-- Subtle Admin Login Access -->
+                    <a href="/admin" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition-all border border-slate-700/60 shadow-sm" title="Akses Khusus Pengelola & Perangkat Desa">
+                        <i class="fa-solid fa-lock text-[10px] text-lightblue-400"></i>
+                        <span>Akses Admin</span>
+                    </a>
+                </div>
             </div>
         </div>
     </footer>

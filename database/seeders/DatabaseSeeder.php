@@ -48,15 +48,53 @@ class DatabaseSeeder extends Seeder
             'order' => 2,
         ]);
 
-        // 3. Profil Desa & Visi Misi
+        // 3. Profil Desa & Visi Misi & Identitas
         VillageProfile::truncate();
         VillageProfile::create([
+            'village_name' => 'Desa Tegalrejo',
+            'subdistrict' => 'Kec. Tengaran',
+            'district' => 'Kab. Semarang',
+            'logo' => null,
+            'logo_icon' => 'fa-solid fa-tree-city',
             'visi' => 'Terwujudnya Desa Tegalrejo yang Mandiri, Sejahtera, Transparan, Berbudaya, dan Berdaya Saing Berbasis Teknologi Informasi dan Ekonomi Kerakyatan.',
             'misi' => "1. Mewujudkan tata kelola pemerintahan desa yang bersih, transparan, dan akuntabel.\n2. Mengembangkan potensi ekonomi desa melalui pendigitalisasian UMKM lokal dan sektor pertanian.\n3. Meningkatkan kualitas sarana, prasarana publik, dan tempat ibadah di seluruh dusun.\n4. Mempererat kebersamaan dan kegiatan kemasyarakatan yang harmonis.",
             'kades_name' => 'Bpk. H. Ahmad Slamet, S.Sos.',
             'kades_photo' => 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80',
             'kades_welcome_text' => '<p>Assalamu’alaikum Warahmatullahi Wabarakatuh.</p><p>Selamat datang di portal informasi resmi Desa Tegalrejo, Kecamatan Tengaran. Website ini hadir sebagai bentuk komitmen transparansi publik, keterbukaan informasi anggaran, serta sarana promosi produk-produk UMKM kebanggaan desa kita. Terima kasih atas kerja keras mahasiswa KKN yang telah mendampingi pendigitalisasian desa ini.</p>',
             'video_url' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+        ]);
+
+        // 3.1. Navigasi Bar Menu (NavBar Items)
+        \App\Models\NavItem::truncate();
+        \App\Models\NavItem::create([
+            'title' => 'Beranda',
+            'url' => '/',
+            'order' => 1,
+            'is_active' => true,
+        ]);
+        \App\Models\NavItem::create([
+            'title' => 'Profil Desa',
+            'url' => '/profil',
+            'order' => 2,
+            'is_active' => true,
+        ]);
+        \App\Models\NavItem::create([
+            'title' => 'Portal Berita',
+            'url' => '/berita',
+            'order' => 3,
+            'is_active' => true,
+        ]);
+        \App\Models\NavItem::create([
+            'title' => 'Belanja UMKM',
+            'url' => '/belanja',
+            'order' => 4,
+            'is_active' => true,
+        ]);
+        \App\Models\NavItem::create([
+            'title' => 'Transparansi',
+            'url' => '/transparansi',
+            'order' => 5,
+            'is_active' => true,
         ]);
 
         // 4. Statistik Desa

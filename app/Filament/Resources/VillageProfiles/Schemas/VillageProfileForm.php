@@ -14,6 +14,26 @@ class VillageProfileForm
     {
         return $schema
             ->components([
+                TextInput::make('village_name')
+                    ->label('Nama Desa')
+                    ->default('Desa Tegalrejo')
+                    ->required(),
+                TextInput::make('subdistrict')
+                    ->label('Kecamatan')
+                    ->default('Kec. Tengaran')
+                    ->required(),
+                TextInput::make('district')
+                    ->label('Kabupaten')
+                    ->default('Kab. Semarang')
+                    ->required(),
+                FileUpload::make('logo')
+                    ->label('Upload Logo / Lambang Desa (Opsional)')
+                    ->image()
+                    ->directory('village-logos')
+                    ->helperText('Format .png, .jpg, atau .svg transparan.'),
+                TextInput::make('logo_icon')
+                    ->label('Icon FontAwesome Logo (Jika tidak ada file logo)')
+                    ->default('fa-solid fa-tree-city'),
                 TextInput::make('kades_name')
                     ->label('Nama Kepala Desa')
                     ->required(),
