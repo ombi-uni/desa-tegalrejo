@@ -38,10 +38,14 @@
         }
     </script>
     <!-- Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.app.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
 <body class="bg-brokenwhite text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-lightblue-200 selection:text-lightblue-900">
 
