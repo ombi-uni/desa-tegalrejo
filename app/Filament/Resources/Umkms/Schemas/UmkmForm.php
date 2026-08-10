@@ -55,11 +55,24 @@ class UmkmForm
                         TextInput::make('product_name')
                             ->label('Nama Produk Unggulan')
                             ->placeholder('mis. Keripik Singkong Balado & Keripik Pisang')
+                            ->required()
+                            ->columnSpanFull(),
+
+                        TextInput::make('price_min')
+                            ->label('Kisaran Harga: Termurah (Min)')
+                            ->numeric()
+                            ->prefix('Rp')
+                            ->placeholder('mis. 10000')
+                            ->helperText('Cukup masukkan angka saja tanpa titik / Rp.')
                             ->required(),
 
-                        TextInput::make('price_range')
-                            ->label('Kisaran / Rentang Harga')
-                            ->placeholder('mis. Rp 10.000 - Rp 35.000'),
+                        TextInput::make('price_max')
+                            ->label('Kisaran Harga: Tertinggi (Max)')
+                            ->numeric()
+                            ->prefix('Rp')
+                            ->placeholder('mis. 35000')
+                            ->helperText('Cukup masukkan angka saja tanpa titik / Rp.')
+                            ->required(),
 
                         Textarea::make('description')
                             ->label('Deskripsi Lengkap & Cerita Usaha')
@@ -117,7 +130,10 @@ class UmkmForm
 
                                 TextInput::make('price')
                                     ->label('Harga Produk')
-                                    ->placeholder('mis. Rp 15.000')
+                                    ->numeric()
+                                    ->prefix('Rp')
+                                    ->placeholder('15000')
+                                    ->helperText('Masukkan angka tanpa titik / Rp.')
                                     ->required(),
 
                                 TextInput::make('unit')
@@ -168,49 +184,25 @@ class UmkmForm
                     ->description('Kelengkapan izin legalitas hasil pendampingan desa.')
                     ->schema([
                         Toggle::make('has_nib')
-                            ->label('Memiliki NIB (Nomor Induk Berusaha)')
-                            ->helperText('Centang jika usaha telah berbadan izin NIB resmi.'),
+                            ->label('Nomor Induk Berusaha (NIB Resmi)')
+                            ->helperText('Centang jika usaha telah memiliki izin NIB.'),
 
                         Toggle::make('has_pirt')
-                            ->label('Memiliki Izin Edar PIRT')
-                            ->helperText('Centang jika produk olahan pangan telah memiliki nomor PIRT.'),
+                            ->label('Izin Edar PIRT')
+                            ->helperText('Centang jika olahan pangan memiliki PIRT.'),
 
                         Toggle::make('has_halal')
-                            ->label('Memiliki Sertifikat Halal')
-                            ->helperText('Centang jika produk telah tersertifikasi Halal MUI/Kemenag.'),
-                    ])
-                    ->columns(3)
-                    ->columnSpanFull(),
+                            ->label('Sertifikat Halal (MUI / Kemenag)')
+                            ->helperText('Centang jika tersertifikasi Halal.'),
 
-                // 6. Pengaturan Tampilan di Beranda
-                Section::make('Pengaturan Tampilan Unggulan di Beranda')
-                    ->description('Beranda website menampilkan maksimal 4 UMKM unggulan pilihan.')
-                    ->schema([
-                        Toggle::make('is_featured')
-                            ->label('Tampilkan UMKM Ini di Halaman Beranda (Maksimal 4 Slot)')
-                            ->live()
-                            ->helperText(function ($record) {
-                                $otherCount = Umkm::where('is_featured', true)
-                                    ->when($record?->id, fn ($q) => $q->where('id', '!=', $record->id))
-                                    ->count();
-                                return "📊 Status: Saat ini ada {$otherCount} UMKM lain yang aktif di Beranda (Maksimal 4 UMKM).";
-                            }),
-
-                        Select::make('featured_order')
-                            ->label('Urutan Slot di Beranda (1 - 4)')
-                            ->options([
-                                1 => 'Slot 1 (Paling Kiri)',
-                                2 => 'Slot 2 (Tengah Kiri)',
-                                3 => 'Slot 3 (Tengah Kanan)',
-                                4 => 'Slot 4 (Paling Kanan)',
-                            ])
-                            ->visible(fn ($get) => (bool) $get('is_featured'))
-                            ->default(1)
-                            ->helperText('Atur urutan penempatan posisi kartu UMKM ini di beranda.'),
+                        Toggle::make('has_bpom')
+                            ->label('Izin Edar BPOM')
+                            ->helperText('Centang jika produk memiliki izin BPOM.'),
                     ])
                     ->columns(2)
                     ->columnSpanFull(),
             ]);
     }
 }
+
 

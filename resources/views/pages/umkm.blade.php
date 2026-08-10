@@ -143,30 +143,33 @@
                             {{ $item->description }}
                         </p>
 
-                        <!-- Legal Badges (NIB, PIRT, Halal) -->
+                        <!-- Legal Badges (NIB, PIRT, Halal, BPOM) -->
                         <div class="flex flex-wrap gap-1.5 pt-2">
                             @if($item->has_nib)
-                                <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1"><i class="fa-solid fa-certificate text-[10px]"></i> NIB Ready</span>
+                                <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><i class="fa-solid fa-certificate text-[11px]"></i> NIB Resmi</span>
                             @endif
                             @if($item->has_pirt)
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1"><i class="fa-solid fa-utensils text-[10px]"></i> PIRT</span>
+                                <span class="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-[11px]"></i> PIRT</span>
                             @endif
                             @if($item->has_halal)
-                                <span class="bg-teal-50 text-teal-700 border border-teal-200 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1"><i class="fa-solid fa-check-double text-[10px]"></i> Halal</span>
+                                <span class="bg-teal-50 text-teal-700 border border-teal-200 text-xs font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><i class="fa-solid fa-moon text-[11px]"></i> Halal</span>
+                            @endif
+                            @if($item->has_bpom)
+                                <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-[11px]"></i> BPOM</span>
                             @endif
                         </div>
                     </div>
                 </a>
 
                 <div class="p-6 pt-0 space-y-3">
-                    <div class="flex items-center justify-between border-t border-slate-100 pt-4">
-                        <div>
-                            <span class="text-[11px] text-slate-400 block font-medium">Perkiraan Harga</span>
-                            <span class="text-sm font-black text-amber-600">{{ $item->price_range ?? 'Hubungi Penjual' }}</span>
+                    <div class="flex items-center justify-between border-t border-slate-100 pt-4 gap-2">
+                        <div class="min-w-0">
+                            <span class="text-[11px] text-slate-400 block font-medium uppercase tracking-wider">Perkiraan Harga</span>
+                            <span class="text-sm font-black text-amber-600 truncate block">{{ $item->price_range_formatted }}</span>
                         </div>
 
-                        <div class="flex items-center gap-2">
-                            <a href="{{ route('umkm.show', $item->slug ?? $item->id) }}" class="px-4 py-2 rounded-xl bg-lightblue-600 hover:bg-lightblue-700 active:scale-95 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-lightblue-600/20 transition-all">
+                        <div class="flex items-center gap-2 shrink-0">
+                            <a href="{{ route('umkm.show', $item->slug ?? $item->id) }}" class="px-4 py-2.5 rounded-xl bg-lightblue-600 hover:bg-lightblue-700 active:scale-95 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-lightblue-600/20 transition-all">
                                 <span>Lihat Detail Toko</span>
                                 <i class="fa-solid fa-arrow-right text-[10px]"></i>
                             </a>

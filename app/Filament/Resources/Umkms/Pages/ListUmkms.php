@@ -20,8 +20,9 @@ class ListUmkms extends ListRecords
             Action::make('manage_featured_umkms')
                 ->label('⭐ Atur 4 UMKM Beranda')
                 ->icon('heroicon-o-sparkles')
-                ->color('warning')
+                ->color('primary')
                 ->modalHeading('⭐ Atur & Tukar Posisi 4 UMKM di Beranda')
+                ->modalSubmitActionLabel('Simpan & Terapkan di Beranda')
                 ->modalDescription('Pilih UMKM untuk mengisi masing-masing slot posisi (Slot 1 sampai Slot 4) yang ditampilkan pada Halaman Beranda. Anda dapat menukar posisi toko dengan mudah di sini.')
                 ->fillForm(function () {
                     $featured = Umkm::where('is_featured', true)->orderBy('featured_order')->orderBy('id')->get();

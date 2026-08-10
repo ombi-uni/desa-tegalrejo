@@ -266,27 +266,35 @@ class="relative bg-slate-950 text-white overflow-hidden min-h-[560px] lg:min-h-[
                             {{ $umkm->description }}
                         </p>
 
-                        <!-- Badges Sertifikasi -->
+                        <!-- Badges Sertifikasi Resmi (NIB, PIRT, Halal, BPOM) -->
                         <div class="flex flex-wrap gap-1.5 pt-1">
                             @if($umkm->has_nib)
-                                <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-check text-[9px]"></i> NIB</span>
+                                <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1"><i class="fa-solid fa-certificate text-[9px]"></i> NIB</span>
                             @endif
                             @if($umkm->has_pirt)
-                                <span class="bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-check text-[9px]"></i> PIRT</span>
+                                <span class="bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1"><i class="fa-solid fa-shield-halved text-[9px]"></i> PIRT</span>
                             @endif
                             @if($umkm->has_halal)
-                                <span class="bg-teal-50 text-teal-700 border border-teal-200 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-check text-[9px]"></i> Halal</span>
+                                <span class="bg-teal-50 text-teal-700 border border-teal-200 text-[10px] font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1"><i class="fa-solid fa-moon text-[9px]"></i> Halal</span>
+                            @endif
+                            @if($umkm->has_bpom)
+                                <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-[10px] font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1"><i class="fa-solid fa-circle-check text-[9px]"></i> BPOM</span>
                             @endif
                         </div>
                     </div>
                 </a>
 
-                <div class="p-5 pt-0 flex items-center justify-between gap-2 border-t border-slate-100 mt-2">
-                    <span class="text-xs font-black text-amber-600 truncate">{{ $umkm->price_range ?? 'Hubungi WA' }}</span>
-                    <a href="{{ route('umkm.show', $umkm->slug ?? $umkm->id) }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-lightblue-50 hover:bg-lightblue-100 text-lightblue-700 text-xs font-bold transition-all">
-                        <span>Lihat Toko</span>
-                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                    </a>
+                <div class="p-5 pt-0 border-t border-slate-100 mt-2">
+                    <div class="flex items-center justify-between gap-3 pt-3">
+                        <div class="min-w-0">
+                            <span class="text-[10px] font-bold text-slate-400 block uppercase tracking-wider">Rentang Harga</span>
+                            <span class="text-xs sm:text-sm font-black text-amber-600 tracking-tight block">{{ $umkm->price_range_formatted }}</span>
+                        </div>
+                        <a href="{{ route('umkm.show', $umkm->slug ?? $umkm->id) }}" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-lightblue-50 hover:bg-lightblue-600 text-lightblue-700 hover:text-white text-xs font-bold transition-all shrink-0">
+                            <span>Lihat Toko</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             @endforeach

@@ -16,7 +16,10 @@ class Umkm extends Model
         'has_nib' => 'boolean',
         'has_pirt' => 'boolean',
         'has_halal' => 'boolean',
+        'has_bpom' => 'boolean',
         'is_featured' => 'boolean',
+        'price_min' => 'integer',
+        'price_max' => 'integer',
         'products_list' => 'array',
         'gallery_images' => 'array',
         'featured_order' => 'integer',
@@ -28,7 +31,31 @@ class Umkm extends Model
             if (empty($umkm->slug) && !empty($umkm->store_name)) {
                 $umkm->slug = Str::slug($umkm->store_name);
             }
+
+            if (!empty($umkm->price_min) && !empty($umkm->price_max)) {
+                if ($umkm->price_min == $umkm->price_max) {
+                    $umkm->price_range = 'Rp ' . number_format($umkm->price_min, 0, ',', '.');
+                } else {
+                    $umkm->price_range = 'Rp ' . number_format($umkm->price_min, 0, ',', '.') . ' - Rp ' . number_format($umkm->price_max, 0, ',', '.');
+                }
+            } elseif (!empty($umkm->price_min)) {
+                $umkm->price_range = 'Mulai Rp ' . number_format($umkm->price_min, 0, ',', '.');
+            }
         });
+    }
+
+    public function getPriceRangeFormattedAttribute(): string
+    {
+        if (!empty($this->price_min) && !empty($this->price_max)) {
+            if ($this->price_min == $this->price_max) {
+                return 'Rp ' . number_format($this->price_min, 0, ',', '.');
+            }
+            return 'Rp ' . number_format($this->price_min, 0, ',', '.') . ' – Rp ' . number_format($this->price_max, 0, ',', '.');
+        } elseif (!empty($this->price_min)) {
+            return 'Mulai Rp ' . number_format($this->price_min, 0, ',', '.');
+        }
+
+        return $this->price_range ?? 'Hubungi Penjual';
     }
 
     public function getImageUrlAttribute(): string
