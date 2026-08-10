@@ -48,7 +48,15 @@ class BannerForm
                         Toggle::make('overlay_dark')
                             ->label('Efek Lapisan Gelap / Fade (Dark Overlay)')
                             ->default(true)
+                            ->live()
                             ->helperText('Nyalakan jika banner memiliki teks agar tulisan kontras & mudah dibaca. Matikan jika foto adalah desain poster/infografis utuh yang ingin tampil terang jernih 100% tanpa bayangan gelap.')
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                if (!$state) {
+                                    $set('has_text', false);
+                                    $set('title', null);
+                                    $set('subtitle', null);
+                                }
+                            })
                             ->columnSpanFull(),
                     ])
                     ->columns(2)
@@ -63,8 +71,11 @@ class BannerForm
                             ->schema([
                                 Toggle::make('has_text')
                                     ->label('Gunakan Teks Banner')
-                                    ->helperText('Nyalakan jika ingin menampilkan judul dan deskripsi teks.')
                                     ->live()
+                                    ->disabled(fn ($get) => !(bool) $get('overlay_dark'))
+                                    ->helperText(fn ($get) => !(bool) $get('overlay_dark') 
+                                        ? '⚠️ Wajib menyalakan switch "Efek Lapisan Gelap / Fade" di atas terlebih dahulu agar teks dapat diaktifkan.' 
+                                        : 'Nyalakan jika ingin menampilkan judul dan deskripsi teks.')
                                     ->default(fn ($record) => filled($record?->title) || filled($record?->subtitle))
                                     ->dehydrated(false)
                                     ->afterStateHydrated(fn ($component, $record) => $component->state(filled($record?->title) || filled($record?->subtitle)))
@@ -79,13 +90,13 @@ class BannerForm
                                 TextInput::make('title')
                                     ->label('Judul Utama Banner')
                                     ->placeholder('Contoh: Selamat Datang di Website Resmi Desa Tegalrejo')
-                                    ->visible(fn ($get) => (bool) $get('has_text'))
+                                    ->visible(fn ($get) => (bool) $get('has_text') && (bool) $get('overlay_dark'))
                                     ->columnSpanFull(),
 
                                 Textarea::make('subtitle')
                                     ->label('Sub-Judul / Deskripsi Banner')
                                     ->placeholder('Contoh: Kecamatan Tengaran, Kabupaten Semarang, Jawa Tengah...')
-                                    ->visible(fn ($get) => (bool) $get('has_text'))
+                                    ->visible(fn ($get) => (bool) $get('has_text') && (bool) $get('overlay_dark'))
                                     ->rows(4)
                                     ->columnSpanFull(),
                             ]),
