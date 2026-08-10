@@ -12,4 +12,5 @@ Route::get('/profil', [ProfileController::class, 'index'])->name('profile');
 Route::get('/berita', [NewsController::class, 'index'])->name('news.index');
 Route::get('/berita/{slug}', [NewsController::class, 'show'])->name('news.show');
 Route::get('/belanja', [UmkmController::class, 'index'])->name('umkm.index');
+Route::get('/belanja/{slug}', [UmkmController::class, 'show'])->name('umkm.show');
 Route::get('/transparansi', [BudgetController::class, 'index'])->name('budget.index');

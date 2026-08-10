@@ -15,7 +15,7 @@ class HomeController extends Controller
         $banners = Banner::where('is_active', true)->orderBy('order')->get();
         $profile = VillageProfile::first();
         $statistic = Statistic::first();
-        $featuredUmkms = Umkm::where('is_featured', true)->take(4)->get();
+        $featuredUmkms = Umkm::where('is_featured', true)->orderBy('featured_order')->orderBy('id')->take(4)->get();
         $latestNews = News::where('status', 'published')->latest('published_at')->take(3)->get();
 
         return view('pages.home', compact('banners', 'profile', 'statistic', 'featuredUmkms', 'latestNews'));

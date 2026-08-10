@@ -27,4 +27,19 @@ class UmkmController extends Controller
 
         return view('pages.umkm', compact('umkms'));
     }
+
+    public function show(string $slug)
+    {
+        $umkm = Umkm::where('slug', $slug)->orWhere('id', $slug)->firstOrFail();
+
+        $relatedUmkms = Umkm::where('id', '!=', $umkm->id)
+            ->where(function ($q) use ($umkm) {
+                $q->where('category', $umkm->category)->orWhere('is_featured', true);
+            })
+            ->take(3)
+            ->get();
+
+        return view('pages.umkm.show', compact('umkm', 'relatedUmkms'));
+    }
 }
+

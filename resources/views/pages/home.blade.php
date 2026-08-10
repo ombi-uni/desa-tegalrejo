@@ -249,25 +249,25 @@ class="relative bg-slate-950 text-white overflow-hidden min-h-[560px] lg:min-h-[
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($featuredUmkms as $umkm)
-            <div class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-lg shadow-slate-200/50 hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col justify-between group">
-                <div>
+            <div class="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col justify-between group">
+                <a href="{{ route('umkm.show', $umkm->slug ?? $umkm->id) }}" class="block">
                     <div class="relative h-48 overflow-hidden bg-slate-100">
                         <img src="{{ $umkm->image_url }}" alt="{{ $umkm->store_name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-slate-800 text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
+                        <div class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
                             {{ $umkm->category }}
                         </div>
                     </div>
                     <div class="p-5 space-y-2">
-                        <h3 class="font-bold text-lg text-slate-900 group-hover:text-lightblue-600 transition-colors line-clamp-1">
+                        <h3 class="font-extrabold text-lg text-slate-900 group-hover:text-lightblue-600 transition-colors line-clamp-1">
                             {{ $umkm->store_name }}
                         </h3>
-                        <p class="text-xs text-slate-400 font-medium">Pemilik: {{ $umkm->owner_name }}</p>
-                        <p class="text-sm text-slate-600 line-clamp-2 leading-relaxed">
+                        <p class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-user-tie mr-1 text-slate-400"></i>{{ $umkm->owner_name }}</p>
+                        <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
                             {{ $umkm->description }}
                         </p>
 
                         <!-- Badges Sertifikasi -->
-                        <div class="flex flex-wrap gap-1.5 pt-2">
+                        <div class="flex flex-wrap gap-1.5 pt-1">
                             @if($umkm->has_nib)
                                 <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-check text-[9px]"></i> NIB</span>
                             @endif
@@ -279,13 +279,13 @@ class="relative bg-slate-950 text-white overflow-hidden min-h-[560px] lg:min-h-[
                             @endif
                         </div>
                     </div>
-                </div>
+                </a>
 
-                <div class="p-5 pt-0 flex items-center justify-between gap-2 border-t border-slate-50 mt-4">
-                    <span class="text-xs font-bold text-slate-900">{{ $umkm->price_range ?? 'Hubungi WA' }}</span>
-                    <a href="https://wa.me/{{ $umkm->whatsapp_number }}?text=Halo%20{{ urlencode($umkm->store_name) }},%20saya%20tertarik%20memesan%20produk%20via%20Website%20Desa%20Tegalrejo." target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors">
-                        <i class="fa-brands fa-whatsapp text-sm"></i>
-                        <span>Pesan</span>
+                <div class="p-5 pt-0 flex items-center justify-between gap-2 border-t border-slate-100 mt-2">
+                    <span class="text-xs font-black text-amber-600 truncate">{{ $umkm->price_range ?? 'Hubungi WA' }}</span>
+                    <a href="{{ route('umkm.show', $umkm->slug ?? $umkm->id) }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-lightblue-50 hover:bg-lightblue-100 text-lightblue-700 text-xs font-bold transition-all">
+                        <span>Lihat Toko</span>
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
                     </a>
                 </div>
             </div>

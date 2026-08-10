@@ -115,7 +115,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach($umkms as $item)
             <div class="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col justify-between group">
-                <div>
+                <a href="{{ route('umkm.show', $item->slug ?? $item->id) }}" class="block">
                     <div class="relative h-56 overflow-hidden bg-slate-100">
                         <img src="{{ $item->image_url }}" alt="{{ $item->store_name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <span class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
@@ -156,24 +156,19 @@
                             @endif
                         </div>
                     </div>
-                </div>
+                </a>
 
                 <div class="p-6 pt-0 space-y-3">
                     <div class="flex items-center justify-between border-t border-slate-100 pt-4">
                         <div>
                             <span class="text-[11px] text-slate-400 block font-medium">Perkiraan Harga</span>
-                            <span class="text-sm font-extrabold text-slate-900">{{ $item->price_range ?? 'Hubungi Penjual' }}</span>
+                            <span class="text-sm font-black text-amber-600">{{ $item->price_range ?? 'Hubungi Penjual' }}</span>
                         </div>
 
                         <div class="flex items-center gap-2">
-                            @if($item->google_maps_url)
-                            <a href="{{ $item->google_maps_url }}" target="_blank" title="Lihat Lokasi di Google Maps" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-colors">
-                                <i class="fa-solid fa-map-location-dot text-sm text-red-500"></i>
-                            </a>
-                            @endif
-                            <a href="https://wa.me/{{ $item->whatsapp_number }}?text=Halo%20{{ urlencode($item->store_name) }},%20saya%20tertarik%20memesan%20{{ urlencode($item->product_name) }}%20via%20Website%20Desa%20Tegalrejo." target="_blank" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-emerald-600/20 transition-all">
-                                <i class="fa-brands fa-whatsapp text-sm"></i>
-                                <span>Pesan WA</span>
+                            <a href="{{ route('umkm.show', $item->slug ?? $item->id) }}" class="px-4 py-2 rounded-xl bg-lightblue-600 hover:bg-lightblue-700 active:scale-95 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-lightblue-600/20 transition-all">
+                                <span>Lihat Detail Toko</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
                             </a>
                         </div>
                     </div>

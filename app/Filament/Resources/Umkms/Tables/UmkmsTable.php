@@ -17,16 +17,52 @@ class UmkmsTable
     {
         return $table
             ->columns([
-                ImageColumn::make('image')->label('Foto'),
-                TextColumn::make('store_name')->label('Nama Toko')->searchable()->sortable(),
-                TextColumn::make('owner_name')->label('Pemilik')->searchable(),
-                TextColumn::make('product_name')->label('Produk'),
-                TextColumn::make('category')->label('Kategori')->badge(),
-                TextColumn::make('price_range')->label('Harga'),
+                ImageColumn::make('image')
+                    ->label('Foto')
+                    ->circular(false)
+                    ->extraImgAttributes(['class' => 'rounded-xl object-cover']),
+
+                TextColumn::make('store_name')
+                    ->label('Nama Usaha / Toko')
+                    ->searchable()
+                    ->sortable()
+                    ->weight('bold'),
+
+                TextColumn::make('owner_name')
+                    ->label('Pemilik')
+                    ->searchable(),
+
+                TextColumn::make('category')
+                    ->label('Kategori')
+                    ->badge()
+                    ->colors([
+                        'primary' => 'Kuliner',
+                        'success' => 'Kerajinan',
+                        'warning' => 'Pertanian & Peternakan',
+                        'danger' => 'Jasa & Fashion',
+                    ]),
+
+                TextColumn::make('price_range')
+                    ->label('Harga')
+                    ->placeholder('-'),
+
+                TextColumn::make('is_featured')
+                    ->label('Status Beranda')
+                    ->badge()
+                    ->state(function ($record) {
+                        if ($record->is_featured) {
+                            return '⭐ Beranda (Slot ' . ($record->featured_order ?: 1) . ')';
+                        }
+                        return 'Katalog UMKM';
+                    })
+                    ->colors([
+                        'warning' => fn ($state) => str_contains($state, 'Beranda'),
+                        'gray' => fn ($state) => $state === 'Katalog UMKM',
+                    ]),
+
                 IconColumn::make('has_nib')->label('NIB')->boolean(),
                 IconColumn::make('has_pirt')->label('PIRT')->boolean(),
                 IconColumn::make('has_halal')->label('Halal')->boolean(),
-                IconColumn::make('is_featured')->label('Featured')->boolean(),
             ])
             ->filters([
                 //
@@ -42,3 +78,4 @@ class UmkmsTable
             ]);
     }
 }
+
