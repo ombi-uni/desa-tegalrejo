@@ -49,12 +49,17 @@ class BannerForm
                             ->label('Efek Lapisan Gelap / Fade (Dark Overlay)')
                             ->default(true)
                             ->live()
-                            ->helperText('Nyalakan jika banner memiliki teks agar tulisan kontras & mudah dibaca. Matikan jika foto adalah desain poster/infografis utuh yang ingin tampil terang jernih 100% tanpa bayangan gelap.')
+                            ->helperText('Nyalakan jika banner memiliki teks/tombol agar tulisan kontras & mudah dibaca. Matikan jika foto adalah desain poster/infografis utuh yang ingin tampil terang jernih 100% tanpa bayangan gelap.')
                             ->afterStateUpdated(function ($state, callable $set) {
                                 if (!$state) {
                                     $set('has_text', false);
                                     $set('title', null);
                                     $set('subtitle', null);
+                                    $set('has_buttons', false);
+                                    $set('button_text', null);
+                                    $set('button_link', null);
+                                    $set('button_secondary_text', null);
+                                    $set('button_secondary_link', null);
                                 }
                             })
                             ->columnSpanFull(),
@@ -107,8 +112,11 @@ class BannerForm
                             ->schema([
                                 Toggle::make('has_buttons')
                                     ->label('Gunakan Tombol Aksi')
-                                    ->helperText('Nyalakan jika ingin menyertakan tombol klik pada banner.')
                                     ->live()
+                                    ->disabled(fn ($get) => !(bool) $get('overlay_dark'))
+                                    ->helperText(fn ($get) => !(bool) $get('overlay_dark') 
+                                        ? '⚠️ Wajib menyalakan switch "Efek Lapisan Gelap / Fade" di atas terlebih dahulu agar tombol dapat diaktifkan.' 
+                                        : 'Nyalakan jika ingin menyertakan tombol klik pada banner.')
                                     ->default(fn ($record) => filled($record?->button_text) || filled($record?->button_secondary_text))
                                     ->dehydrated(false)
                                     ->afterStateHydrated(fn ($component, $record) => $component->state(filled($record?->button_text) || filled($record?->button_secondary_text)))
@@ -125,23 +133,23 @@ class BannerForm
                                 TextInput::make('button_text')
                                     ->label('Teks Tombol 1 (Utama)')
                                     ->placeholder('Contoh: Lihat Produk UMKM')
-                                    ->visible(fn ($get) => (bool) $get('has_buttons')),
+                                    ->visible(fn ($get) => (bool) $get('has_buttons') && (bool) $get('overlay_dark')),
 
                                 TextInput::make('button_link')
                                     ->label('Link Tujuan Tombol 1')
                                     ->placeholder('Contoh: /umkm atau /profil')
-                                    ->visible(fn ($get) => (bool) $get('has_buttons')),
+                                    ->visible(fn ($get) => (bool) $get('has_buttons') && (bool) $get('overlay_dark')),
 
                                 TextInput::make('button_secondary_text')
                                     ->label('Teks Tombol 2 (Sekunder)')
-                                    ->helperText('Kosongkan jika hanya ingin 1 tombol.')
+                                    ->helperText('Kosongkan jika hanya 1 tombol.')
                                     ->placeholder('Contoh: Profil & Perangkat Desa')
-                                    ->visible(fn ($get) => (bool) $get('has_buttons')),
+                                    ->visible(fn ($get) => (bool) $get('has_buttons') && (bool) $get('overlay_dark')),
 
                                 TextInput::make('button_secondary_link')
                                     ->label('Link Tujuan Tombol 2')
                                     ->placeholder('Contoh: /profil atau /berita')
-                                    ->visible(fn ($get) => (bool) $get('has_buttons')),
+                                    ->visible(fn ($get) => (bool) $get('has_buttons') && (bool) $get('overlay_dark')),
                             ])
                             ->columns(2),
                     ])
