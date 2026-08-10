@@ -18,7 +18,7 @@ class BannerForm
             ->components([
                 // 1. Section Atas: Lebar Penuh
                 Section::make('Foto Hero & Pengaturan Slider')
-                    ->description('Unggah foto utama dan atur urutan kemunculan banner pada slider beranda.')
+                    ->description('Unggah foto utama, atur efek tampilan, dan urutan kemunculan banner pada slider beranda.')
                     ->schema([
                         FileUpload::make('image')
                             ->label('Foto / Gambar Hero Banner')
@@ -26,7 +26,10 @@ class BannerForm
                             ->disk('public')
                             ->visibility('public')
                             ->directory('banner-images')
-                            ->helperText('Disarankan foto landscape beresolusi tinggi (contoh: 1920 x 800 px) pemandangan desa, balai desa, atau potensi UMKM.')
+                            ->helperText('📐 PANDUAN UKURAN DESAIN HERO BANNER:
+• Ukuran Ideal Layar Penuh (Desktop/PC): 1920 × 720 px (atau 1920 × 800 px).
+• Tinggi Tampilan Website: 640 px (Laptop/Desktop) dan 560 px (Smartphone/Tablet).
+• Safe Zone (Area Aman): Letakkan informasi/objek penting di area tengah (1200 × 550 px) agar tidak terpotong saat dibuka dari HP.')
                             ->required()
                             ->columnSpanFull(),
 
@@ -41,6 +44,12 @@ class BannerForm
                             ->label('Status Banner Aktif (Tayang di Beranda)')
                             ->default(true)
                             ->helperText('Aktifkan agar banner ini ikut berputar pada slider beranda.'),
+
+                        Toggle::make('overlay_dark')
+                            ->label('Efek Lapisan Gelap / Fade (Dark Overlay)')
+                            ->default(true)
+                            ->helperText('Nyalakan jika banner memiliki teks agar tulisan kontras & mudah dibaca. Matikan jika foto adalah desain poster/infografis utuh yang ingin tampil terang jernih 100% tanpa bayangan gelap.')
+                            ->columnSpanFull(),
                     ])
                     ->columns(2)
                     ->columnSpanFull(),

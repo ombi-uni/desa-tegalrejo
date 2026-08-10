@@ -64,16 +64,23 @@ class="relative bg-slate-950 text-white overflow-hidden min-h-[560px] lg:min-h-[
         <!-- Background Hero Image -->
         <img src="{{ $banner->image_url ?? 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80' }}" 
              alt="{{ $banner->title ?? 'Desa Tegalrejo' }}" 
-             class="w-full h-full object-cover opacity-45 mix-blend-overlay">
-        <!-- Gradient Overlay for Optimal Text Contrast -->
-        <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/85 to-slate-900/40"></div>
+             class="w-full h-full object-cover {{ ($banner->overlay_dark ?? true) ? 'opacity-50 mix-blend-overlay' : 'opacity-100' }}">
+        
+        <!-- Gradient Overlay for Optimal Text Contrast (Only when overlay_dark is ON) -->
+        @if($banner->overlay_dark ?? true)
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/80 to-slate-900/40"></div>
+        @endif
     </div>
     @endforeach
 
-    <!-- Banner Content Overlay -->
+    <!-- Banner Content Overlay (Only rendered if title, subtitle, or buttons exist) -->
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 w-full">
         <div class="grid grid-cols-1 grid-rows-1 [&>*]:col-start-1 [&>*]:row-start-1 items-center">
             @foreach($bannerList as $index => $banner)
+            @php
+                $hasContent = filled($banner->title) || filled($banner->subtitle) || filled($banner->button_text) || filled($banner->button_secondary_text);
+            @endphp
+            @if($hasContent)
             <div x-show="active === {{ $index }}"
                  x-cloak
                  x-transition:enter="transition ease-out duration-700 delay-100"
@@ -84,34 +91,39 @@ class="relative bg-slate-950 text-white overflow-hidden min-h-[560px] lg:min-h-[
                  x-transition:leave-end="opacity-0 -translate-y-4"
                  class="max-w-3xl space-y-6">
 
-                <!-- Title -->
-                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight drop-shadow-sm">
-                    {{ $banner->title ?? 'Selamat Datang di Website Resmi Desa Tegalrejo' }}
+                <!-- Title (Strictly from Admin, no fallback) -->
+                @if(filled($banner->title))
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight drop-shadow-md">
+                    {{ $banner->title }}
                 </h1>
+                @endif
 
                 <!-- Subtitle -->
-                @if(!empty($banner->subtitle))
-                <p class="text-base sm:text-xl text-slate-300 font-normal leading-relaxed">
+                @if(filled($banner->subtitle))
+                <p class="text-base sm:text-xl text-slate-300 font-normal leading-relaxed drop-shadow-sm">
                     {{ $banner->subtitle }}
                 </p>
                 @endif
 
                 <!-- Action Buttons (Configured by Admin) -->
+                @if(filled($banner->button_text) || filled($banner->button_secondary_text))
                 <div class="pt-4 flex flex-wrap gap-4 items-center">
-                    @if(!empty($banner->button_text))
+                    @if(filled($banner->button_text))
                     <a href="{{ $banner->button_link ?? route('umkm.index') }}" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white bg-lightblue-600 hover:bg-lightblue-700 active:scale-95 transition-all shadow-lg shadow-lightblue-600/30">
                         <span>{{ $banner->button_text }}</span>
                         <i class="fa-solid fa-arrow-right text-sm"></i>
                     </a>
                     @endif
 
-                    @if(!empty($banner->button_secondary_text))
+                    @if(filled($banner->button_secondary_text))
                     <a href="{{ $banner->button_secondary_link ?? route('profile') }}" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-slate-200 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 active:scale-95 transition-all">
                         <span>{{ $banner->button_secondary_text }}</span>
                     </a>
                     @endif
                 </div>
+                @endif
             </div>
+            @endif
             @endforeach
         </div>
     </div>
