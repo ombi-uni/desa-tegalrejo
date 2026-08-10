@@ -4,8 +4,14 @@
 
 @section('content')
 <!-- Header Banner -->
-<section class="bg-gradient-to-r from-slate-900 via-slate-800 to-lightblue-900 text-white py-16 lg:py-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+<section class="relative bg-gradient-to-r from-slate-900 via-slate-800 to-lightblue-900 text-white py-16 lg:py-20 overflow-hidden">
+    @if(!empty($villageProfile->budget_banner_url ?? null))
+    <div class="absolute inset-0 z-0">
+        <img src="{{ $villageProfile->budget_banner_url }}" alt="Banner Transparansi APBDES" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/80 to-lightblue-950/80 backdrop-blur-[1px]"></div>
+    </div>
+    @endif
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
         <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Transparansi Anggaran Desa (APBDES)</h1>
         <p class="text-slate-300 max-w-2xl mx-auto text-base">Laporan pertanggungjawaban Pendapatan, Belanja, dan Pembiayaan Desa Tegalrejo Tahun Anggaran 2026.</p>
     </div>

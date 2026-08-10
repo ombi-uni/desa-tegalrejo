@@ -4,8 +4,14 @@
 
 @section('content')
 <!-- Header Banner -->
-<section class="bg-gradient-to-r from-slate-900 via-slate-800 to-lightblue-900 text-white py-16 lg:py-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+<section class="relative bg-gradient-to-r from-slate-900 via-slate-800 to-lightblue-900 text-white py-16 lg:py-20 overflow-hidden">
+    @if(!empty($villageProfile->news_banner_url ?? null))
+    <div class="absolute inset-0 z-0">
+        <img src="{{ $villageProfile->news_banner_url }}" alt="Banner Portal Berita" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/80 to-lightblue-950/80 backdrop-blur-[1px]"></div>
+    </div>
+    @endif
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
         <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Portal Berita & Artikel Desa Tegalrejo</h1>
         <p class="text-slate-300 max-w-2xl mx-auto text-base">Informasi terbaru seputar kegiatan desa, pembangunan, dan pengumuman resmi.</p>
     </div>
@@ -16,7 +22,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <!-- Search & Filter Bar with Modern Minimalist Dropdown -->
         <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-md">
-            <form action="{{ route('news.index') }}" method="GET" class="flex flex-col md:flex-row items-center gap-3 w-full">
+            <form x-ref="newsFilterForm" action="{{ route('news.index') }}" method="GET" class="flex flex-col md:flex-row items-center gap-3 w-full">
                 <!-- Search Input Field -->
                 <div class="relative flex-1 w-full">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400"></i>
@@ -27,22 +33,66 @@
                            class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-lightblue-500 focus:ring-2 focus:ring-lightblue-100 text-sm placeholder:text-slate-400 bg-white">
                 </div>
 
-                <!-- Category Minimalist Dropdown -->
-                <div class="relative w-full md:w-64 shrink-0">
-                    <i class="fa-solid fa-layer-group absolute left-3.5 top-3.5 text-slate-400 pointer-events-none"></i>
-                    <select name="category" 
-                            onchange="this.form.submit()" 
-                            class="w-full pl-10 pr-9 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-lightblue-500 focus:ring-2 focus:ring-lightblue-100 text-sm font-medium text-slate-700 bg-white appearance-none cursor-pointer">
-                        <option value="">Semua Kategori</option>
-                        <option value="Kegiatan KKN" {{ request('category') == 'Kegiatan KKN' ? 'selected' : '' }}>Kegiatan KKN</option>
-                        <option value="Kemasyarakatan" {{ request('category') == 'Kemasyarakatan' ? 'selected' : '' }}>Kemasyarakatan</option>
-                        <option value="BUMDES" {{ request('category') == 'BUMDES' ? 'selected' : '' }}>BUMDES</option>
-                        <option value="Berita Utama" {{ request('category') == 'Berita Utama' ? 'selected' : '' }}>Berita Utama</option>
-                        <option value="Kegiatan Desa" {{ request('category') == 'Kegiatan Desa' ? 'selected' : '' }}>Kegiatan Desa</option>
-                        <option value="Pembangunan" {{ request('category') == 'Pembangunan' ? 'selected' : '' }}>Pembangunan</option>
-                        <option value="Pengumuman" {{ request('category') == 'Pengumuman' ? 'selected' : '' }}>Pengumuman</option>
-                    </select>
-                    <i class="fa-solid fa-chevron-down absolute right-3.5 top-3.5 text-xs text-slate-400 pointer-events-none"></i>
+                <!-- Custom Modern Minimalist Category Dropdown -->
+                <div x-data="{ 
+                        open: false, 
+                        selected: '{{ request('category') ? request('category') : 'Semua Kategori' }}',
+                        value: '{{ request('category') ?? '' }}',
+                        selectCategory(val, label) {
+                            this.selected = label;
+                            this.value = val;
+                            this.open = false;
+                            $nextTick(() => {
+                                $refs.newsFilterForm.submit();
+                            });
+                        }
+                     }" 
+                     class="relative w-full md:w-64 shrink-0" 
+                     @click.outside="open = false">
+                    
+                    <!-- Hidden Input for submission -->
+                    <input type="hidden" name="category" :value="value">
+
+                    <!-- Trigger Button -->
+                    <button type="button" 
+                            @click="open = !open" 
+                            class="w-full flex items-center justify-between gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:border-lightblue-400 focus:outline-none focus:ring-2 focus:ring-lightblue-100 transition-all text-sm font-semibold text-slate-700 shadow-sm text-left">
+                        <div class="flex items-center gap-2.5 truncate">
+                            <i class="fa-solid fa-layer-group text-lightblue-600 text-xs"></i>
+                            <span x-text="selected" class="truncate"></span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-[11px] text-slate-400 transition-transform duration-200" :class="{ 'rotate-180 text-lightblue-600': open }"></i>
+                    </button>
+
+                    <!-- Dropdown List Popover -->
+                    <div x-show="open" 
+                         x-cloak
+                         x-transition:enter="transition ease-out duration-150"
+                         x-transition:enter-start="opacity-0 -translate-y-2 scale-95"
+                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                         x-transition:leave="transition ease-in duration-100"
+                         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                         x-transition:leave-end="opacity-0 -translate-y-2 scale-95"
+                         class="absolute z-50 left-0 right-0 mt-2 p-1.5 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-100 max-h-64 overflow-y-auto space-y-0.5">
+                        
+                        <button type="button" 
+                                @click="selectCategory('', 'Semua Kategori')"
+                                class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-semibold transition-all text-left"
+                                :class="value === '' ? 'bg-lightblue-600 text-white font-bold' : 'text-slate-700 hover:bg-slate-50 hover:text-lightblue-600'">
+                            <span>Semua Kategori</span>
+                            <i x-show="value === ''" class="fa-solid fa-check text-xs"></i>
+                        </button>
+
+                        @foreach(['Kegiatan KKN', 'Kemasyarakatan', 'BUMDES', 'Berita Utama', 'Kegiatan Desa', 'Pembangunan', 'Pengumuman'] as $cat)
+                        <button type="button" 
+                                @click="selectCategory('{{ $cat }}', '{{ $cat }}')"
+                                class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-semibold transition-all text-left"
+                                :class="value === '{{ $cat }}' ? 'bg-lightblue-600 text-white font-bold' : 'text-slate-700 hover:bg-slate-50 hover:text-lightblue-600'">
+                            <span>{{ $cat }}</span>
+                            <i x-show="value === '{{ $cat }}'" class="fa-solid fa-check text-xs"></i>
+                        </button>
+                        @endforeach
+                    </div>
                 </div>
 
                 <!-- Action Buttons (Cari & Reset) -->

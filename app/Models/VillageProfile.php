@@ -67,4 +67,37 @@ class VillageProfile extends Model
 
         return asset('storage/' . $this->logo);
     }
+
+    public function getProfileBannerUrlAttribute(): ?string
+    {
+        if (empty($this->profile_banner_image)) {
+            return null;
+        }
+        return str_starts_with($this->profile_banner_image, 'http') ? $this->profile_banner_image : asset('storage/' . $this->profile_banner_image);
+    }
+
+    public function getNewsBannerUrlAttribute(): ?string
+    {
+        if (empty($this->news_banner_image)) {
+            return null;
+        }
+        return str_starts_with($this->news_banner_image, 'http') ? $this->news_banner_image : asset('storage/' . $this->news_banner_image);
+    }
+
+    public function getUmkmBannerUrlAttribute(): ?string
+    {
+        if (empty($this->umkm_banner_image)) {
+            return null;
+        }
+        return str_starts_with($this->umkm_banner_image, 'http') ? $this->umkm_banner_image : asset('storage/' . $this->umkm_banner_image);
+    }
+
+    public function getBudgetBannerUrlAttribute(): ?string
+    {
+        if (empty($this->budget_banner_image)) {
+            return null;
+        }
+        return str_starts_with($this->budget_banner_image, 'http') ? $this->budget_banner_image : asset('storage/' . $this->budget_banner_image);
+    }
 }
+

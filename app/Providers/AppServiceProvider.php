@@ -23,14 +23,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        View::composer('*', function ($view) {
+            if (Schema::hasTable('village_profiles')) {
+                $villageProfile = VillageProfile::first();
+                $view->with('villageProfile', $villageProfile);
+            }
+        });
+
         View::composer('layouts.app', function ($view) {
             if (Schema::hasTable('nav_items')) {
                 $navItems = NavItem::with('children')->root()->active()->orderBy('order')->get();
                 $view->with('navItems', $navItems);
-            }
-            if (Schema::hasTable('village_profiles')) {
-                $villageProfile = VillageProfile::first();
-                $view->with('villageProfile', $villageProfile);
             }
         });
     }
