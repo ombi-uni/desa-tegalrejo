@@ -25,6 +25,7 @@
     timer: null,
     startAutoSlide() {
         if (this.total > 1) {
+            // PENGATURAN DURASI SLIDER: Ubah angka 6500 (milidetik) di bawah sesuai kebutuhan (misal 5000 = 5 detik, 8000 = 8 detik)
             this.timer = setInterval(() => {
                 this.next();
             }, 6500);
@@ -82,12 +83,6 @@ class="relative bg-slate-950 text-white overflow-hidden min-h-[560px] lg:min-h-[
                  x-transition:leave-start="opacity-100 translate-y-0"
                  x-transition:leave-end="opacity-0 -translate-y-4"
                  class="max-w-3xl space-y-6">
-
-                <!-- Tag / Badge Text -->
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-lightblue-500/20 border border-lightblue-400/30 text-lightblue-300 text-xs font-semibold uppercase tracking-wider">
-                    <i class="fa-solid fa-sparkles"></i> 
-                    <span>{{ $banner->badge_text ?? 'Portal Resmi Desa Tegalrejo' }}</span>
-                </div>
 
                 <!-- Title -->
                 <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight drop-shadow-sm">
@@ -203,9 +198,6 @@ class="relative bg-slate-950 text-white overflow-hidden min-h-[560px] lg:min-h-[
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div class="lg:col-span-5 space-y-6">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lightblue-50 text-lightblue-600 text-xs font-bold uppercase tracking-wider">
-                    <i class="fa-solid fa-film"></i> Mengenal Desa
-                </div>
                 <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
                     Video Profil Desa Tegalrejo
                 </h2>
@@ -234,8 +226,7 @@ class="relative bg-slate-950 text-white overflow-hidden min-h-[560px] lg:min-h-[
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
             <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-lightblue-600 bg-lightblue-50 px-3 py-1 rounded-full">Program Pendampingan KKN</span>
-                <h2 class="text-3xl font-extrabold text-slate-900 mt-3 tracking-tight">Katalog UMKM Desa Tegalrejo</h2>
+                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Katalog UMKM Desa Tegalrejo</h2>
                 <p class="text-slate-500 mt-1 max-w-xl">Produk lokal berkualitas hasil pendampingan NIB, PIRT, Sertifikat Halal, dan Toko Digital.</p>
             </div>
             <a href="{{ route('umkm.index') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-lightblue-600 bg-white border border-lightblue-200 hover:bg-lightblue-50 transition-all shadow-sm">
@@ -296,7 +287,6 @@ class="relative bg-slate-950 text-white overflow-hidden min-h-[560px] lg:min-h-[
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
             <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-lightblue-600 bg-lightblue-50 px-3 py-1 rounded-full">Informasi Terkini</span>
                 <h2 class="text-3xl font-extrabold text-slate-900 mt-3 tracking-tight">Berita & Kegiatan Desa</h2>
                 <p class="text-slate-500 mt-1 max-w-xl">Kumpulan artikel berita dan agenda kegiatan terbaru Desa Tegalrejo.</p>
             </div>

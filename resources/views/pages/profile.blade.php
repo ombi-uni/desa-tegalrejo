@@ -6,7 +6,6 @@
 <!-- Header Banner -->
 <section class="bg-gradient-to-r from-slate-900 via-slate-800 to-lightblue-900 text-white py-16 lg:py-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-        <span class="text-xs font-bold uppercase tracking-wider text-lightblue-400 bg-lightblue-500/20 px-3.5 py-1.5 rounded-full border border-lightblue-400/30">Tentang Kami</span>
         <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Profil & Aparatur Desa Tegalrejo</h1>
         <p class="text-slate-300 max-w-2xl mx-auto text-base sm:text-lg">Kecamatan Tengaran, Kabupaten Semarang, Jawa Tengah.</p>
     </div>
@@ -57,9 +56,6 @@
                 </div>
 
                 <div class="lg:col-span-8 space-y-4 border-t lg:border-t-0 lg:border-l border-slate-100 pt-6 lg:pt-0 lg:pl-10">
-                    <div class="inline-flex items-center gap-2 text-xs font-bold text-lightblue-600 bg-lightblue-50 px-3 py-1 rounded-full uppercase">
-                        <i class="fa-solid fa-quote-left"></i> Sambutan Resmi
-                    </div>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Kata Sambutan Kepala Desa</h2>
                     <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
                         {!! $profile->kades_welcome_text !!}
@@ -74,7 +70,6 @@
 <section class="py-20 bg-white border-t border-slate-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div class="text-center max-w-2xl mx-auto space-y-3">
-            <span class="text-xs font-bold uppercase tracking-wider text-lightblue-600 bg-lightblue-50 px-3 py-1 rounded-full">Pemerintahan Desa</span>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Struktur Aparatur Desa Tegalrejo</h2>
             <p class="text-slate-500">Susunan jajaran Pemerintah Desa Tegalrejo yang siap melayani masyarakat.</p>
         </div>

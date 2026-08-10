@@ -6,7 +6,6 @@
 <!-- Header Banner -->
 <section class="bg-gradient-to-r from-slate-900 via-slate-800 to-lightblue-900 text-white py-16 lg:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-        <span class="text-xs font-bold uppercase tracking-wider text-lightblue-400 bg-lightblue-500/20 px-3.5 py-1.5 rounded-full border border-lightblue-400/30">Kabar Desa</span>
         <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Portal Berita & Artikel Desa Tegalrejo</h1>
         <p class="text-slate-300 max-w-2xl mx-auto text-base">Informasi terbaru seputar kegiatan desa, pembangunan, dan pengumuman resmi.</p>
     </div>
