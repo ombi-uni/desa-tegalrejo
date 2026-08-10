@@ -94,40 +94,7 @@ class VillageProfileForm
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
-
-                Section::make('Gambar Banner Header Setiap Halaman')
-                    ->description('Unggah gambar latar belakang header (banner) untuk masing-masing halaman website agar tampil menarik dan estetik.')
-                    ->schema([
-                        FileUpload::make('profile_banner_image')
-                            ->label('Banner Header Halaman: Profil Desa')
-                            ->image()
-                            ->disk('public')
-                            ->visibility('public')
-                            ->directory('page-banners')
-                            ->helperText('Gambar latar header halaman Profil Desa (Rekomendasi rasio lebar 16:9 / panorama).'),
-                        FileUpload::make('news_banner_image')
-                            ->label('Banner Header Halaman: Portal Berita')
-                            ->image()
-                            ->disk('public')
-                            ->visibility('public')
-                            ->directory('page-banners')
-                            ->helperText('Gambar latar header halaman Portal Berita & Artikel.'),
-                        FileUpload::make('umkm_banner_image')
-                            ->label('Banner Header Halaman: Belanja UMKM')
-                            ->image()
-                            ->disk('public')
-                            ->visibility('public')
-                            ->directory('page-banners')
-                            ->helperText('Gambar latar header halaman Katalog Belanja Produk UMKM.'),
-                        FileUpload::make('budget_banner_image')
-                            ->label('Banner Header Halaman: Transparansi APBDES')
-                            ->image()
-                            ->disk('public')
-                            ->visibility('public')
-                            ->directory('page-banners')
-                            ->helperText('Gambar latar header halaman Transparansi Anggaran APBDES.'),
-                    ])
-                    ->columns(2),
             ]);
     }
 }
+
