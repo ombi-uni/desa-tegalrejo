@@ -199,10 +199,10 @@ class="relative bg-slate-950 text-white overflow-hidden min-h-[560px] lg:min-h-[
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div class="lg:col-span-5 space-y-6">
                 <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                    Video Profil Desa Tegalrejo
+                    {{ $profile->video_title ?? 'Video Profil Desa Tegalrejo' }}
                 </h2>
                 <p class="text-slate-600 leading-relaxed">
-                    Saksikan keindahan alam, kehidupan masyarakat yang kental akan kebersamaan, serta geliat ekonomi UMKM lokal Desa Tegalrejo, Kecamatan Tengaran, Kabupaten Semarang.
+                    {{ $profile->video_description ?? 'Saksikan keindahan alam, kehidupan masyarakat yang kental akan kebersamaan, serta geliat ekonomi UMKM lokal Desa Tegalrejo, Kecamatan Tengaran, Kabupaten Semarang.' }}
                 </p>
                 <div class="pt-2">
                     <a href="{{ route('profile') }}" class="inline-flex items-center gap-2 font-bold text-lightblue-600 hover:text-lightblue-700 transition-colors">
