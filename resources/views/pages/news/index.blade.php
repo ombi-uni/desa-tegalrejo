@@ -14,26 +14,49 @@
 <!-- Filter & News Grid Section -->
 <section class="py-16 bg-brokenwhite">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        <!-- Search & Filter Bar -->
-        <div class="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200/80 shadow-md flex flex-col md:flex-row items-center justify-between gap-4">
-            <form action="{{ route('news.index') }}" method="GET" class="w-full md:w-auto flex-1 flex flex-col sm:flex-row items-center gap-3">
-                <div class="relative w-full">
+        <!-- Search & Filter Bar with Modern Minimalist Dropdown -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-md">
+            <form action="{{ route('news.index') }}" method="GET" class="flex flex-col md:flex-row items-center gap-3 w-full">
+                <!-- Search Input Field -->
+                <div class="relative flex-1 w-full">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400"></i>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari judul berita atau kata kunci..." class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-lightblue-500 focus:ring-2 focus:ring-lightblue-100 text-sm">
+                    <input type="text" 
+                           name="search" 
+                           value="{{ request('search') }}" 
+                           placeholder="Cari judul berita atau kata kunci..." 
+                           class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-lightblue-500 focus:ring-2 focus:ring-lightblue-100 text-sm placeholder:text-slate-400 bg-white">
                 </div>
-                <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-lightblue-600 hover:bg-lightblue-700 text-white text-sm font-bold transition-colors">
-                    Cari
-                </button>
-            </form>
 
-            <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0">
-                <a href="{{ route('news.index') }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap {{ !request('category') ? 'bg-lightblue-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">Semua</a>
-                <a href="{{ route('news.index', ['category' => 'Kegiatan KKN']) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap {{ request('category') == 'Kegiatan KKN' ? 'bg-lightblue-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">Kegiatan KKN</a>
-                <a href="{{ route('news.index', ['category' => 'Kemasyarakatan']) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap {{ request('category') == 'Kemasyarakatan' ? 'bg-lightblue-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">Kemasyarakatan</a>
-                <a href="{{ route('news.index', ['category' => 'BUMDES']) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap {{ request('category') == 'BUMDES' ? 'bg-lightblue-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">BUMDES</a>
-                <a href="{{ route('news.index', ['category' => 'Berita Utama']) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap {{ request('category') == 'Berita Utama' ? 'bg-lightblue-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">Berita Utama</a>
-                <a href="{{ route('news.index', ['category' => 'Kegiatan Desa']) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap {{ request('category') == 'Kegiatan Desa' ? 'bg-lightblue-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">Kegiatan Desa</a>
-            </div>
+                <!-- Category Minimalist Dropdown -->
+                <div class="relative w-full md:w-64 shrink-0">
+                    <i class="fa-solid fa-layer-group absolute left-3.5 top-3.5 text-slate-400 pointer-events-none"></i>
+                    <select name="category" 
+                            onchange="this.form.submit()" 
+                            class="w-full pl-10 pr-9 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-lightblue-500 focus:ring-2 focus:ring-lightblue-100 text-sm font-medium text-slate-700 bg-white appearance-none cursor-pointer">
+                        <option value="">Semua Kategori</option>
+                        <option value="Kegiatan KKN" {{ request('category') == 'Kegiatan KKN' ? 'selected' : '' }}>Kegiatan KKN</option>
+                        <option value="Kemasyarakatan" {{ request('category') == 'Kemasyarakatan' ? 'selected' : '' }}>Kemasyarakatan</option>
+                        <option value="BUMDES" {{ request('category') == 'BUMDES' ? 'selected' : '' }}>BUMDES</option>
+                        <option value="Berita Utama" {{ request('category') == 'Berita Utama' ? 'selected' : '' }}>Berita Utama</option>
+                        <option value="Kegiatan Desa" {{ request('category') == 'Kegiatan Desa' ? 'selected' : '' }}>Kegiatan Desa</option>
+                        <option value="Pembangunan" {{ request('category') == 'Pembangunan' ? 'selected' : '' }}>Pembangunan</option>
+                        <option value="Pengumuman" {{ request('category') == 'Pengumuman' ? 'selected' : '' }}>Pengumuman</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down absolute right-3.5 top-3.5 text-xs text-slate-400 pointer-events-none"></i>
+                </div>
+
+                <!-- Action Buttons (Cari & Reset) -->
+                <div class="flex items-center gap-2 w-full md:w-auto shrink-0">
+                    <button type="submit" class="flex-1 md:flex-initial px-6 py-2.5 rounded-xl bg-lightblue-600 hover:bg-lightblue-700 active:scale-95 text-white text-sm font-bold transition-all shadow-sm">
+                        Cari
+                    </button>
+                    @if(request('search') || request('category'))
+                    <a href="{{ route('news.index') }}" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-semibold transition-colors text-center" title="Reset Filter">
+                        <i class="fa-solid fa-rotate-left mr-1"></i> Reset
+                    </a>
+                    @endif
+                </div>
+            </form>
         </div>
 
         <!-- Articles Grid -->
