@@ -154,53 +154,167 @@ class="relative bg-slate-950 text-white overflow-hidden min-h-[560px] lg:min-h-[
     @endif
 </section>
 
-<!-- Statistik Desa Counter Section -->
+<!-- Statistik Desa Counter Section with Count-Up Animation -->
 <section class="py-16 lg:py-20 bg-brokenwhite border-b border-slate-200/70">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
+            
             <!-- Counter 1: Penduduk -->
-            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-xl shadow-slate-200/50 hover:border-lightblue-300 transition-all group">
+            <div x-data="{
+                target: {{ (int)($statistic->population_count ?? 4850) }},
+                current: 0,
+                started: false,
+                init() {
+                    let observer = new IntersectionObserver((entries) => {
+                        if (entries[0].isIntersecting && !this.started) {
+                            this.animate();
+                        }
+                    }, { threshold: 0.2 });
+                    observer.observe(this.$el);
+                },
+                animate() {
+                    this.started = true;
+                    const duration = 2000;
+                    const start = performance.now();
+                    const step = (now) => {
+                        const progress = Math.min((now - start) / duration, 1);
+                        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                        this.current = Math.round(this.target * ease);
+                        if (progress < 1) {
+                            requestAnimationFrame(step);
+                        } else {
+                            this.current = this.target;
+                        }
+                    };
+                    requestAnimationFrame(step);
+                }
+            }" class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all group">
                 <div class="w-12 h-12 rounded-xl bg-lightblue-50 text-lightblue-600 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
                     <i class="fa-solid fa-users"></i>
                 </div>
-                <div class="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+                <div class="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight" x-text="current.toLocaleString('id-ID')">
                     {{ number_format($statistic->population_count ?? 4850) }}
                 </div>
                 <div class="text-sm font-medium text-slate-500 mt-1">Jumlah Penduduk (Jiwa)</div>
             </div>
 
             <!-- Counter 2: Bangunan -->
-            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-xl shadow-slate-200/50 hover:border-lightblue-300 transition-all group">
+            <div x-data="{
+                target: {{ (int)($statistic->building_count ?? 1240) }},
+                current: 0,
+                started: false,
+                init() {
+                    let observer = new IntersectionObserver((entries) => {
+                        if (entries[0].isIntersecting && !this.started) {
+                            this.animate();
+                        }
+                    }, { threshold: 0.2 });
+                    observer.observe(this.$el);
+                },
+                animate() {
+                    this.started = true;
+                    const duration = 2000;
+                    const start = performance.now();
+                    const step = (now) => {
+                        const progress = Math.min((now - start) / duration, 1);
+                        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                        this.current = Math.round(this.target * ease);
+                        if (progress < 1) {
+                            requestAnimationFrame(step);
+                        } else {
+                            this.current = this.target;
+                        }
+                    };
+                    requestAnimationFrame(step);
+                }
+            }" class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all group">
                 <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
                     <i class="fa-solid fa-house-chimney"></i>
                 </div>
-                <div class="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+                <div class="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight" x-text="current.toLocaleString('id-ID')">
                     {{ number_format($statistic->building_count ?? 1240) }}
                 </div>
                 <div class="text-sm font-medium text-slate-500 mt-1">Jumlah Bangunan</div>
             </div>
 
             <!-- Counter 3: Fasilitas Umum -->
-            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-xl shadow-slate-200/50 hover:border-lightblue-300 transition-all group">
+            <div x-data="{
+                target: {{ (int)($statistic->facility_count ?? 18) }},
+                current: 0,
+                started: false,
+                init() {
+                    let observer = new IntersectionObserver((entries) => {
+                        if (entries[0].isIntersecting && !this.started) {
+                            this.animate();
+                        }
+                    }, { threshold: 0.2 });
+                    observer.observe(this.$el);
+                },
+                animate() {
+                    this.started = true;
+                    const duration = 1800;
+                    const start = performance.now();
+                    const step = (now) => {
+                        const progress = Math.min((now - start) / duration, 1);
+                        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                        this.current = Math.round(this.target * ease);
+                        if (progress < 1) {
+                            requestAnimationFrame(step);
+                        } else {
+                            this.current = this.target;
+                        }
+                    };
+                    requestAnimationFrame(step);
+                }
+            }" class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all group">
                 <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
                     <i class="fa-solid fa-building-columns"></i>
                 </div>
-                <div class="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+                <div class="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight" x-text="current.toLocaleString('id-ID')">
                     {{ number_format($statistic->facility_count ?? 18) }}
                 </div>
                 <div class="text-sm font-medium text-slate-500 mt-1">Fasilitas Umum (Makam, Lapangan, dll)</div>
             </div>
 
             <!-- Counter 4: Tempat Ibadah -->
-            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-xl shadow-slate-200/50 hover:border-lightblue-300 transition-all group">
+            <div x-data="{
+                target: {{ (int)($statistic->worship_place_count ?? 14) }},
+                current: 0,
+                started: false,
+                init() {
+                    let observer = new IntersectionObserver((entries) => {
+                        if (entries[0].isIntersecting && !this.started) {
+                            this.animate();
+                        }
+                    }, { threshold: 0.2 });
+                    observer.observe(this.$el);
+                },
+                animate() {
+                    this.started = true;
+                    const duration = 1800;
+                    const start = performance.now();
+                    const step = (now) => {
+                        const progress = Math.min((now - start) / duration, 1);
+                        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                        this.current = Math.round(this.target * ease);
+                        if (progress < 1) {
+                            requestAnimationFrame(step);
+                        } else {
+                            this.current = this.target;
+                        }
+                    };
+                    requestAnimationFrame(step);
+                }
+            }" class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all group">
                 <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
                     <i class="fa-solid fa-mosque"></i>
                 </div>
-                <div class="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+                <div class="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight" x-text="current.toLocaleString('id-ID')">
                     {{ number_format($statistic->worship_place_count ?? 14) }}
                 </div>
                 <div class="text-sm font-medium text-slate-500 mt-1">Tempat Ibadah</div>
             </div>
+            
         </div>
     </div>
 </section>

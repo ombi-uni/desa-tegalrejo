@@ -128,7 +128,7 @@
                         <span class="text-xl font-bold text-white tracking-tight">{{ $villageProfile->village_name ?? 'Desa Tegalrejo' }}</span>
                     </div>
                     <p class="text-slate-400 text-sm leading-relaxed max-w-md">
-                        Website Resmi {{ $villageProfile->village_name ?? 'Desa Tegalrejo' }}, {{ $villageProfile->subdistrict ?? 'Kecamatan Tengaran' }}, {{ $villageProfile->district ?? 'Kabupaten Semarang' }}, Jawa Tengah. Dikembangkan dalam rangka Digitalisasi Desa dan Pendampingan UMKM bersama Mahasiswa KKN.
+                        Website Resmi {{ $villageProfile->village_name ?? 'Desa Tegalrejo' }}, {{ $villageProfile->subdistrict ?? 'Kecamatan Tengaran' }}, {{ $villageProfile->district ?? 'Kabupaten Semarang' }}, Jawa Tengah. Dikembangkan dalam rangka Digitalisasi Desa dan Pendampingan UMKM bersama Mahasiswa KKN UNNES GIAT 16.
                     </p>
                     <div class="flex items-center gap-3 pt-2">
                         <a href="#" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-lightblue-600 text-slate-300 hover:text-white flex items-center justify-center transition-colors"><i class="fa-brands fa-facebook-f text-sm"></i></a>
@@ -156,7 +156,7 @@
                     <ul class="space-y-3 text-sm text-slate-300">
                         <li class="flex items-start gap-2.5">
                             <i class="fa-solid fa-location-dot text-lightblue-400 mt-1"></i>
-                            <span>Jl. Raya Tegalrejo No. 01, {{ $villageProfile->subdistrict ?? 'Kec. Tengaran' }}, {{ $villageProfile->district ?? 'Kab. Semarang' }}, Jawa Tengah 50775</span>
+                            <span>Dusun Kalisoko Kidul, Desa Tegalrejo, {{ $villageProfile->subdistrict ?? 'Kec. Tengaran' }}, {{ $villageProfile->district ?? 'Kab. Semarang' }}, Jawa Tengah, 50225</span>
                         </li>
                         <li class="flex items-center gap-2.5">
                             <i class="fa-solid fa-envelope text-lightblue-400"></i>
