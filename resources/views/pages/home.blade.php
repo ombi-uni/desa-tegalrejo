@@ -301,7 +301,7 @@ class="relative bg-slate-950 text-white overflow-hidden min-h-[560px] lg:min-h-[
             <article class="bg-brokenwhite rounded-2xl overflow-hidden border border-slate-100 shadow-md hover:shadow-lg transition-all flex flex-col justify-between group">
                 <div>
                     <div class="relative h-48 overflow-hidden bg-slate-100">
-                        <img src="{{ $item->thumbnail ?? 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80' }}" alt="{{ $item->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ $item->image_url }}" alt="{{ $item->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <span class="absolute top-3 left-3 bg-lightblue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                             {{ $item->category }}
                         </span>

@@ -70,7 +70,7 @@
         </div>
 
         <!-- Article Rich Content -->
-        <div class="bg-white p-8 sm:p-12 rounded-3xl border border-slate-200/80 shadow-md prose prose-slate max-w-none prose-lg leading-relaxed">
+        <div class="bg-white p-8 sm:p-12 rounded-3xl border border-slate-200/80 shadow-md prose prose-slate max-w-none prose-lg leading-relaxed [&_img]:rounded-2xl [&_img]:shadow-md [&_img]:my-6 [&_img]:w-full [&_img]:max-h-[550px] [&_img]:object-cover">
             {!! $article->content !!}
         </div>
 
@@ -81,7 +81,7 @@
                 @foreach($recentNews as $recent)
                 <a href="{{ route('news.show', $recent->slug) }}" class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-lightblue-300 flex items-center gap-4 transition-all group">
                     <div class="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">
-                        <img src="{{ $recent->thumbnail ?? 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80' }}" alt="{{ $recent->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                        <img src="{{ $recent->image_url }}" alt="{{ $recent->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
                     </div>
                     <div class="space-y-1">
                         <span class="text-[10px] font-bold text-lightblue-600 uppercase">{{ $recent->category }}</span>
