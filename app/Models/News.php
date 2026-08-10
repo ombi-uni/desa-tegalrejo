@@ -27,4 +27,29 @@ class News extends Model
 
         return asset('storage/' . $this->thumbnail);
     }
+
+    /**
+     * Pastikan semua link gambar inline di dalam artikel selalu menggunakan path relatif /storage/ yang valid
+     */
+    public function getContentAttribute($value): string
+    {
+        if (empty($value)) {
+            return '';
+        }
+
+        return str_replace(
+            ['http://localhost/storage/', 'https://localhost/storage/', 'http://127.0.0.1:8000/storage/'],
+            '/storage/',
+            $value
+        );
+    }
+
+    public function setContentAttribute($value): void
+    {
+        $this->attributes['content'] = str_replace(
+            ['http://localhost/storage/', 'https://localhost/storage/', 'http://127.0.0.1:8000/storage/'],
+            '/storage/',
+            $value ?? ''
+        );
+    }
 }

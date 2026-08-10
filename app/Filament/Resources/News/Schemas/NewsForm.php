@@ -64,6 +64,7 @@ class NewsForm
                             ->fileAttachmentsDisk('public')
                             ->fileAttachmentsVisibility('public')
                             ->fileAttachmentsDirectory('news-content-images')
+                            ->getFileAttachmentUrlUsing(fn (string $file): string => '/storage/' . $file)
                             ->helperText('💡 TIPS: Untuk menyisipkan foto di tengah-tengah tulisan, klik tombol ikon lampiran / klip kertas pada bilah menu editor di atas.')
                             ->required()
                             ->columnSpanFull(),
