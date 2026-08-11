@@ -85,6 +85,9 @@
                     <a href="{{ route('budget.index') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('budget.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                         Transparansi
                     </a>
+                    <a href="{{ route('kependudukan.index') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('kependudukan.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                        Kependudukan
+                    </a>
                 </nav>
 
                 <!-- Mobile Menu Button -->
@@ -103,6 +106,7 @@
             <a href="{{ route('news.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('news.*') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">Portal Berita</a>
             <a href="{{ route('umkm.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('umkm.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">Belanja UMKM</a>
             <a href="{{ route('budget.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('budget.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">Transparansi</a>
+            <a href="{{ route('kependudukan.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('kependudukan.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">Kependudukan</a>
         </div>
     </header>
 
@@ -147,6 +151,7 @@
                         <li><a href="{{ route('news.index') }}" class="hover:text-lightblue-400 transition-colors">Portal Berita Terbaru</a></li>
                         <li><a href="{{ route('umkm.index') }}" class="hover:text-lightblue-400 transition-colors">Katalog Belanja UMKM</a></li>
                         <li><a href="{{ route('budget.index') }}" class="hover:text-lightblue-400 transition-colors">Transparansi Anggaran</a></li>
+                        <li><a href="{{ route('kependudukan.index') }}" class="hover:text-lightblue-400 transition-colors">Statistik Kependudukan</a></li>
                     </ul>
                 </div>
 
