@@ -15,20 +15,64 @@
 
     $hamlets     = $s->hamlets_data    ?? [];
     $religions   = $s->religion_data   ?? [];
-    $educations  = $s->education_data  ?? [];
-    $ageGroups   = $s->age_group_data  ?? [];
     $occupations = $s->occupation_data ?? [];
-
-    $totalHamlets   = collect($hamlets)->sum('count');
-    $totalReligions = collect($religions)->sum('count');
-    $totalEducation = collect($educations)->sum('count');
-    $totalOccupation = collect($occupations)->sum('count');
-    $totalAge       = collect($ageGroups)->sum('count');
-
-    // Male/Female percentage
+    
+    // Male/Female percentage (for text)
     $malePercent   = $population > 0 ? round(($male / $population) * 100, 1) : 0;
     $femalePercent = $population > 0 ? round(($female / $population) * 100, 1) : 0;
+
+    // Male/Female width (for chart)
+    $totalGender = $male + $female;
+    $maleWidth = $totalGender > 0 ? round(($male / $totalGender) * 100) : 0;
+    $femaleWidth = $totalGender > 0 ? round(($female / $totalGender) * 100) : 0;
+
+    // Process Education Data
+    $rawEducations = $s->education_data ?? [];
+    if (isset($rawEducations[0]['label'])) $rawEducations = []; // handle old format transition
+    $educationMap = [
+        'belum_sekolah' => 'Belum sekolah',
+        'tk'            => 'TK/RA sederajat',
+        'sd'            => 'SD sederajat',
+        'smp'           => 'SMP sederajat',
+        'sma'           => 'SMA sederajat',
+        'diploma'       => 'Diploma 1/2/3 sederajat',
+        's1'            => 'Strata 1 sederajat',
+        's2'            => 'Strata 2 sederajat',
+        's3'            => 'Strata 3 sederajat',
+    ];
+    $educations = [];
+    foreach($educationMap as $key => $label) {
+        $count = (int)($rawEducations[$key] ?? 0);
+        if ($count > 0) {
+            $educations[] = ['label' => $label, 'count' => $count];
+        }
+    }
+
+    // Process Age Group Data
+    $rawAge = $s->age_group_data ?? [];
+    if (isset($rawAge[0]['label'])) $rawAge = []; // handle old format transition
+    $ageMap = [
+        'balita' => 'Balita (0 - 5 Tahun)',
+        'anak'   => 'Anak-Anak (6 - 12 Tahun)',
+        'remaja' => 'Remaja (13 - 17 Tahun)',
+        'dewasa' => 'Dewasa (18 - 59 Tahun)',
+        'lansia' => 'Lansia (60+ Tahun)',
+    ];
+    $ageGroups = [];
+    foreach($ageMap as $key => $label) {
+        $count = (int)($rawAge[$key] ?? 0);
+        if ($count > 0) {
+            $ageGroups[] = ['label' => $label, 'count' => $count];
+        }
+    }
+
+    $totalHamlets    = collect($hamlets)->sum('count');
+    $totalReligions  = collect($religions)->sum('count');
+    $totalEducation  = collect($educations)->sum('count');
+    $totalOccupation = collect($occupations)->sum('count');
+    $totalAge        = collect($ageGroups)->sum('count');
 @endphp
+
 
 {{-- ══════════════════════════════════════════════════ --}}
 {{-- HERO BANNER                                        --}}
@@ -42,10 +86,6 @@
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
             <div class="space-y-5 max-w-2xl">
-                <div class="inline-flex items-center gap-2.5 bg-lightblue-500/20 border border-lightblue-500/30 text-lightblue-300 text-xs font-bold px-4 py-2 rounded-full tracking-wider">
-                    <i class="fa-solid fa-chart-column text-lightblue-400"></i>
-                    DATA KEPENDUDUKAN RESMI
-                </div>
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-none">
                     Statistik<br>
                     <span class="text-lightblue-400">Kependudukan</span><br>
@@ -63,22 +103,22 @@
             </div>
 
             {{-- Hero Stats Preview --}}
-            <div class="grid grid-cols-2 gap-4 shrink-0 w-full lg:w-auto lg:max-w-xs">
-                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 text-center space-y-1">
-                    <div class="text-3xl font-black text-white">{{ number_format($population) }}</div>
-                    <div class="text-xs text-slate-400 font-semibold">Total Jiwa</div>
+            <div class="grid grid-cols-2 gap-4 shrink-0 w-full lg:w-auto lg:max-w-md">
+                <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 text-center space-y-1">
+                    <div class="text-4xl lg:text-5xl font-black text-white">{{ number_format($population) }}</div>
+                    <div class="text-sm text-slate-400 font-semibold">Total Jiwa</div>
                 </div>
-                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 text-center space-y-1">
-                    <div class="text-3xl font-black text-lightblue-400">{{ number_format($household) }}</div>
-                    <div class="text-xs text-slate-400 font-semibold">Kepala Keluarga</div>
+                <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 text-center space-y-1">
+                    <div class="text-4xl lg:text-5xl font-black text-lightblue-400">{{ number_format($household) }}</div>
+                    <div class="text-sm text-slate-400 font-semibold">Kepala Keluarga</div>
                 </div>
-                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 text-center space-y-1">
-                    <div class="text-3xl font-black text-sky-400">{{ number_format($male) }}</div>
-                    <div class="text-xs text-slate-400 font-semibold">Laki-laki</div>
+                <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 text-center space-y-1">
+                    <div class="text-4xl lg:text-5xl font-black text-sky-400">{{ number_format($male) }}</div>
+                    <div class="text-sm text-slate-400 font-semibold">Laki-laki</div>
                 </div>
-                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 text-center space-y-1">
-                    <div class="text-3xl font-black text-pink-400">{{ number_format($female) }}</div>
-                    <div class="text-xs text-slate-400 font-semibold">Perempuan</div>
+                <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 text-center space-y-1">
+                    <div class="text-4xl lg:text-5xl font-black text-pink-400">{{ number_format($female) }}</div>
+                    <div class="text-sm text-slate-400 font-semibold">Perempuan</div>
                 </div>
             </div>
         </div>
@@ -179,7 +219,7 @@
                             <span class="text-sky-600">{{ number_format($male) }} jiwa ({{ $malePercent }}%)</span>
                         </div>
                         <div class="h-4 bg-sky-100 rounded-full overflow-hidden">
-                            <div x-data="{ w: 0 }" x-init="setTimeout(() => w = {{ $malePercent }}, 300)"
+                            <div x-data="{ w: 0 }" x-init="setTimeout(() => w = {{ $maleWidth }}, 300)"
                                  :style="'width:' + w + '%'"
                                  class="h-full bg-gradient-to-r from-sky-400 to-sky-600 rounded-full transition-all duration-1000 ease-out"></div>
                         </div>
@@ -191,7 +231,7 @@
                             <span class="text-pink-600">{{ number_format($female) }} jiwa ({{ $femalePercent }}%)</span>
                         </div>
                         <div class="h-4 bg-pink-100 rounded-full overflow-hidden">
-                            <div x-data="{ w: 0 }" x-init="setTimeout(() => w = {{ $femalePercent }}, 600)"
+                            <div x-data="{ w: 0 }" x-init="setTimeout(() => w = {{ $femaleWidth }}, 600)"
                                  :style="'width:' + w + '%'"
                                  class="h-full bg-gradient-to-r from-pink-400 to-pink-600 rounded-full transition-all duration-1000 ease-out"></div>
                         </div>
@@ -416,22 +456,38 @@
             @php $maxOcc = collect($occupations)->max('count'); @endphp
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 @php
-                    $occColors = [
-                        ['icon' => 'fa-tractor', 'grad' => 'from-lime-400 to-green-500', 'bg' => 'bg-lime-50', 'tc' => 'text-lime-700'],
-                        ['icon' => 'fa-hard-hat', 'grad' => 'from-amber-400 to-orange-500', 'bg' => 'bg-amber-50', 'tc' => 'text-amber-700'],
-                        ['icon' => 'fa-store', 'grad' => 'from-blue-400 to-indigo-500', 'bg' => 'bg-blue-50', 'tc' => 'text-blue-700'],
-                        ['icon' => 'fa-user-tie', 'grad' => 'from-violet-400 to-purple-500', 'bg' => 'bg-violet-50', 'tc' => 'text-violet-700'],
-                        ['icon' => 'fa-graduation-cap', 'grad' => 'from-sky-400 to-lightblue-500', 'bg' => 'bg-sky-50', 'tc' => 'text-sky-700'],
-                        ['icon' => 'fa-stethoscope', 'grad' => 'from-rose-400 to-pink-500', 'bg' => 'bg-rose-50', 'tc' => 'text-rose-700'],
-                        ['icon' => 'fa-wrench', 'grad' => 'from-slate-400 to-slate-600', 'bg' => 'bg-slate-50', 'tc' => 'text-slate-700'],
-                        ['icon' => 'fa-ellipsis', 'grad' => 'from-teal-400 to-cyan-500', 'bg' => 'bg-teal-50', 'tc' => 'text-teal-700'],
-                    ];
+                    if(!function_exists('getOccupationStyle')) {
+                        function getOccupationStyle($label) {
+                            $label = strtolower($label);
+                            if (str_contains($label, 'tani') || str_contains($label, 'kebun')) return ['icon' => 'fa-tractor', 'grad' => 'from-lime-400 to-green-500', 'bg' => 'bg-lime-50', 'tc' => 'text-lime-700'];
+                            if (str_contains($label, 'dagang') || str_contains($label, 'jual') || str_contains($label, 'wiraswasta') || str_contains($label, 'usaha')) return ['icon' => 'fa-store', 'grad' => 'from-blue-400 to-blue-500', 'bg' => 'bg-blue-50', 'tc' => 'text-blue-700'];
+                            if (str_contains($label, 'guru') || str_contains($label, 'dosen') || str_contains($label, 'pengajar')) return ['icon' => 'fa-chalkboard-user', 'grad' => 'from-violet-400 to-purple-500', 'bg' => 'bg-violet-50', 'tc' => 'text-violet-700'];
+                            if (str_contains($label, 'pelajar') || str_contains($label, 'mahasiswa') || str_contains($label, 'sekolah')) return ['icon' => 'fa-graduation-cap', 'grad' => 'from-sky-400 to-sky-500', 'bg' => 'bg-sky-50', 'tc' => 'text-sky-700'];
+                            if (str_contains($label, 'medis') || str_contains($label, 'dokter') || str_contains($label, 'perawat') || str_contains($label, 'bidan')) return ['icon' => 'fa-user-nurse', 'grad' => 'from-rose-400 to-rose-500', 'bg' => 'bg-rose-50', 'tc' => 'text-rose-700'];
+                            if (str_contains($label, 'pns') || str_contains($label, 'aparatur') || str_contains($label, 'pegawai negeri') || str_contains($label, 'pemerintah') || str_contains($label, 'perangkat')) return ['icon' => 'fa-building-user', 'grad' => 'from-indigo-400 to-indigo-500', 'bg' => 'bg-indigo-50', 'tc' => 'text-indigo-700'];
+                            if (str_contains($label, 'tni') || str_contains($label, 'polri') || str_contains($label, 'polisi') || str_contains($label, 'tentara')) return ['icon' => 'fa-shield-halved', 'grad' => 'from-emerald-400 to-emerald-500', 'bg' => 'bg-emerald-50', 'tc' => 'text-emerald-700'];
+                            if (str_contains($label, 'karyawan') || str_contains($label, 'swasta')) return ['icon' => 'fa-user-tie', 'grad' => 'from-slate-400 to-slate-500', 'bg' => 'bg-slate-50', 'tc' => 'text-slate-700'];
+                            if (str_contains($label, 'buruh') || str_contains($label, 'tukang') || str_contains($label, 'pekerja')) return ['icon' => 'fa-hammer', 'grad' => 'from-amber-400 to-amber-500', 'bg' => 'bg-amber-50', 'tc' => 'text-amber-700'];
+                            if (str_contains($label, 'pensiun')) return ['icon' => 'fa-user-clock', 'grad' => 'from-slate-400 to-slate-600', 'bg' => 'bg-slate-100', 'tc' => 'text-slate-600'];
+                            if (str_contains($label, 'ibu rumah tangga') || str_contains($label, 'irt')) return ['icon' => 'fa-house-user', 'grad' => 'from-pink-400 to-pink-500', 'bg' => 'bg-pink-50', 'tc' => 'text-pink-700'];
+                            if (str_contains($label, 'belum') || str_contains($label, 'tidak bekerja') || str_contains($label, 'penganggur')) return ['icon' => 'fa-user-xmark', 'grad' => 'from-red-400 to-red-500', 'bg' => 'bg-red-50', 'tc' => 'text-red-700'];
+                            if (str_contains($label, 'sopir') || str_contains($label, 'pengemudi')) return ['icon' => 'fa-truck-fast', 'grad' => 'from-orange-400 to-orange-500', 'bg' => 'bg-orange-50', 'tc' => 'text-orange-700'];
+                            if (str_contains($label, 'asisten') || str_contains($label, 'art')) return ['icon' => 'fa-broom', 'grad' => 'from-teal-400 to-teal-500', 'bg' => 'bg-teal-50', 'tc' => 'text-teal-700'];
+                            
+                            $defaults = [
+                                ['icon' => 'fa-briefcase', 'grad' => 'from-cyan-400 to-cyan-500', 'bg' => 'bg-cyan-50', 'tc' => 'text-cyan-700'],
+                                ['icon' => 'fa-id-card', 'grad' => 'from-fuchsia-400 to-fuchsia-500', 'bg' => 'bg-fuchsia-50', 'tc' => 'text-fuchsia-700'],
+                                ['icon' => 'fa-user-tag', 'grad' => 'from-zinc-400 to-zinc-500', 'bg' => 'bg-zinc-50', 'tc' => 'text-zinc-700'],
+                            ];
+                            return $defaults[abs(crc32($label)) % count($defaults)];
+                        }
+                    }
                 @endphp
                 @foreach($occupations as $idx => $occ)
                 @php
                     $occPct     = $maxOcc > 0 ? round(($occ['count'] / $maxOcc) * 100) : 0;
                     $occRealPct = $totalOccupation > 0 ? round(($occ['count'] / $totalOccupation) * 100, 1) : 0;
-                    $oc         = $occColors[$idx % count($occColors)];
+                    $oc         = getOccupationStyle($occ['label']);
                 @endphp
                 <div x-data="{ w: 0, bar: {{ $occPct }} }"
                      x-init="let obs = new IntersectionObserver((e) => { if(e[0].isIntersecting) { setTimeout(() => w = bar, {{ 100 + $idx * 80 }}); } }, {threshold:0.2}); obs.observe($el);"
@@ -461,36 +517,5 @@
     </div>
 </section>
 
-{{-- ══════════════════════════════════════════════════ --}}
-{{-- SOURCE NOTE FOOTER SECTION                        --}}
-{{-- ══════════════════════════════════════════════════ --}}
-<section class="py-10 bg-slate-950 border-t border-slate-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div class="flex items-start gap-4">
-                <div class="w-10 h-10 bg-slate-800 text-slate-400 rounded-xl flex items-center justify-center text-lg shrink-0">
-                    <i class="fa-solid fa-file-lines"></i>
-                </div>
-                <div>
-                    <div class="text-sm font-bold text-slate-300">Keterangan Sumber Data</div>
-                    <p class="text-sm text-slate-500 mt-0.5">
-                        {{ $s->last_updated_note ?? 'Sumber: Data Administrasi Kependudukan Desa Tegalrejo, Kecamatan Tengaran, Kabupaten Semarang.' }}
-                    </p>
-                    <p class="text-xs text-slate-600 mt-1">Data dapat diperbarui sewaktu-waktu oleh perangkat desa melalui sistem informasi desa.</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-3 shrink-0">
-                <a href="{{ route('profile') }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-sm font-bold transition-all border border-slate-700">
-                    <i class="fa-solid fa-building-columns text-sm"></i>
-                    <span>Profil Desa</span>
-                </a>
-                <a href="{{ route('home') }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-lightblue-600 hover:bg-lightblue-700 text-white text-sm font-bold transition-all shadow-md shadow-lightblue-600/20">
-                    <i class="fa-solid fa-house text-sm"></i>
-                    <span>Beranda</span>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
 
 @endsection

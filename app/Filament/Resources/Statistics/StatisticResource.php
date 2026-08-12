@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Statistics;
 
-use App\Filament\Resources\Statistics\Pages\CreateStatistic;
 use App\Filament\Resources\Statistics\Pages\EditStatistic;
 use App\Filament\Resources\Statistics\Pages\ListStatistics;
 use App\Filament\Resources\Statistics\Schemas\StatisticForm;
@@ -20,9 +19,15 @@ class StatisticResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChartBar;
 
-    protected static ?string $navigationLabel = 'Statistik Desa';
+    protected static ?string $navigationLabel = 'Statistik Beranda';
 
-    protected static ?string $pluralModelLabel = 'Statistik Desa';
+    protected static ?string $pluralModelLabel = 'Statistik Beranda';
+
+    protected static ?string $modelLabel = 'Statistik Beranda';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Data Kependudukan';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {
@@ -36,17 +41,15 @@ class StatisticResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => ListStatistics::route('/'),
-            'create' => CreateStatistic::route('/create'),
-            'edit' => EditStatistic::route('/{record}/edit'),
+            'index'  => ListStatistics::route('/'),
+            'create' => \App\Filament\Resources\Statistics\Pages\CreateStatistic::route('/create'),
+            'edit'   => EditStatistic::route('/{record}/edit'),
         ];
     }
 }

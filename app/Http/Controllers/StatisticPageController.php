@@ -9,7 +9,7 @@ class StatisticPageController extends Controller
 {
     public function index()
     {
-        $statistic = Statistic::first();
+        $statistic = Statistic::latest('updated_at')->first();
         $profile   = VillageProfile::first();
 
         return view('pages.kependudukan', compact('statistic', 'profile'));

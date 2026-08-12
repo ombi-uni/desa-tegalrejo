@@ -79,14 +79,14 @@
                     <a href="{{ route('news.index') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('news.*') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                         Portal Berita
                     </a>
+                    <a href="{{ route('kependudukan.index') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('kependudukan.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                        Kependudukan
+                    </a>
                     <a href="{{ route('umkm.index') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('umkm.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                         Belanja UMKM
                     </a>
                     <a href="{{ route('budget.index') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('budget.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                         Transparansi
-                    </a>
-                    <a href="{{ route('kependudukan.index') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('kependudukan.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
-                        Kependudukan
                     </a>
                 </nav>
 
@@ -104,9 +104,9 @@
             <a href="{{ route('home') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('home') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">Beranda</a>
             <a href="{{ route('profile') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('profile') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">Profil Desa</a>
             <a href="{{ route('news.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('news.*') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">Portal Berita</a>
+            <a href="{{ route('kependudukan.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('kependudukan.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">Kependudukan</a>
             <a href="{{ route('umkm.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('umkm.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">Belanja UMKM</a>
             <a href="{{ route('budget.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('budget.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">Transparansi</a>
-            <a href="{{ route('kependudukan.index') }}" class="block px-4 py-2.5 rounded-lg text-base font-medium {{ request()->routeIs('kependudukan.index') ? 'bg-lightblue-50 text-lightblue-600 font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">Kependudukan</a>
         </div>
     </header>
 

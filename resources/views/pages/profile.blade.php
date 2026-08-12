@@ -82,13 +82,13 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach($apparatuses as $app)
-            <div class="bg-brokenwhite rounded-2xl p-6 border border-slate-200/70 shadow-md hover:shadow-xl hover:border-lightblue-300 transition-all text-center space-y-4 group">
-                <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-300">
-                    <img src="{{ $app->image_url }}" alt="{{ $app->name }}" class="w-full h-full object-cover">
+            <div class="bg-brokenwhite rounded-2xl p-4 sm:p-5 border border-slate-200/70 shadow-md hover:shadow-xl hover:border-lightblue-300 transition-all text-center space-y-4 group">
+                <div class="w-full aspect-[4/5] max-w-[240px] mx-auto rounded-2xl overflow-hidden border-4 border-white shadow-md group-hover:shadow-lg transition-all duration-300">
+                    <img src="{{ $app->image_url }}" alt="{{ $app->name }}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
                 </div>
                 <div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-lightblue-600 transition-colors">{{ $app->name }}</h3>
-                    <p class="text-sm font-semibold text-lightblue-600 mt-0.5">{{ $app->position }}</p>
+                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-lightblue-600 transition-colors px-2 truncate" title="{{ $app->name }}">{{ $app->name }}</h3>
+                    <p class="text-sm font-semibold text-lightblue-600 mt-0.5 px-2 line-clamp-2" title="{{ $app->position }}">{{ $app->position }}</p>
                 </div>
                 @if($app->phone)
                 <div class="pt-2 border-t border-slate-200/60">
