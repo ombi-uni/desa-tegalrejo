@@ -99,5 +99,12 @@ class VillageProfile extends Model
         }
         return str_starts_with($this->budget_banner_image, 'http') ? $this->budget_banner_image : asset('storage/' . $this->budget_banner_image);
     }
-}
 
+    public function getKependudukanBannerUrlAttribute(): ?string
+    {
+        if (empty($this->kependudukan_banner_image)) {
+            return null;
+        }
+        return str_starts_with($this->kependudukan_banner_image, 'http') ? $this->kependudukan_banner_image : asset('storage/' . $this->kependudukan_banner_image);
+    }
+}

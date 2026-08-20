@@ -54,7 +54,7 @@
             <!-- Total Pembiayaan -->
             <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-lg shadow-slate-200/50 space-y-3">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Pembiayaan (SILPA)</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Pembiayaan Desa</span>
                     <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center">
                         <i class="fa-solid fa-piggy-bank"></i>
                     </div>
@@ -62,7 +62,7 @@
                 <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900">
                     Rp {{ number_format($totalPembiayaan, 0, ',', '.') }}
                 </h3>
-                <p class="text-xs text-slate-500 font-medium">Cadangan & Penerimaan Pembiayaan</p>
+                <p class="text-xs text-slate-500 font-medium">SILPA Tahun Lalu & Penerimaan Pembiayaan Lainnya</p>
             </div>
         </div>
 
@@ -73,17 +73,23 @@
                 <div class="bg-emerald-600 text-white p-6 flex items-center justify-between">
                     <h3 class="font-bold text-lg flex items-center gap-2">
                         <i class="fa-solid fa-circle-arrow-down"></i>
-                        <span>Rincian Pendapatan Desa 2026</span>
+                        <span>Rincian Pendapatan Desa</span>
                     </h3>
-                    <span class="text-xs font-bold bg-white/20 px-3 py-1 rounded-full">Kategori 01</span>
+                    @if(!empty($villageProfile->pendapatan_doc))
+                    <a href="{{ route('budget.doc.download', 'pendapatan') }}" target="_blank"
+                       class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 border border-white/30 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all backdrop-blur-sm"
+                       title="Buka & Unduh Laporan Pendapatan Desa">
+                        <i class="fa-solid fa-file-pdf text-rose-200"></i> Unduh Laporan PDF
+                    </a>
+                    @endif
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm text-slate-700">
                         <thead class="bg-slate-50 text-slate-500 uppercase text-[11px] font-bold border-b border-slate-100">
                             <tr>
-                                <th class="px-6 py-4">No</th>
+                                <th class="px-6 py-4 w-12">No</th>
                                 <th class="px-6 py-4">Pos Uraian Anggaran</th>
-                                <th class="px-6 py-4">Tahun</th>
+                                <th class="px-6 py-4 w-24">Tahun</th>
                                 <th class="px-6 py-4 text-right">Jumlah (Rp)</th>
                             </tr>
                         </thead>
@@ -106,17 +112,23 @@
                 <div class="bg-rose-600 text-white p-6 flex items-center justify-between">
                     <h3 class="font-bold text-lg flex items-center gap-2">
                         <i class="fa-solid fa-circle-arrow-up"></i>
-                        <span>Rincian Belanja Desa 2026</span>
+                        <span>Rincian Belanja Desa</span>
                     </h3>
-                    <span class="text-xs font-bold bg-white/20 px-3 py-1 rounded-full">Kategori 02</span>
+                    @if(!empty($villageProfile->belanja_doc))
+                    <a href="{{ route('budget.doc.download', 'belanja') }}" target="_blank"
+                       class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 border border-white/30 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all backdrop-blur-sm"
+                       title="Buka & Unduh Laporan Belanja Desa">
+                        <i class="fa-solid fa-file-pdf text-rose-200"></i> Unduh Laporan PDF
+                    </a>
+                    @endif
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm text-slate-700">
                         <thead class="bg-slate-50 text-slate-500 uppercase text-[11px] font-bold border-b border-slate-100">
                             <tr>
-                                <th class="px-6 py-4">No</th>
+                                <th class="px-6 py-4 w-12">No</th>
                                 <th class="px-6 py-4">Pos Uraian Anggaran</th>
-                                <th class="px-6 py-4">Tahun</th>
+                                <th class="px-6 py-4 w-24">Tahun</th>
                                 <th class="px-6 py-4 text-right">Jumlah (Rp)</th>
                             </tr>
                         </thead>

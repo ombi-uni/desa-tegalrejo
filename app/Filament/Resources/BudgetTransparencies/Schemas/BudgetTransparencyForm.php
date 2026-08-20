@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\BudgetTransparencies\Schemas;
 
-use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -21,10 +21,11 @@ class BudgetTransparencyForm
                 Select::make('category')
                     ->label('Kategori Anggaran')
                     ->options([
-                        'Pendapatan' => 'Pendapatan Desa',
-                        'Belanja' => 'Belanja Desa',
-                        'Pembiayaan' => 'Pembiayaan Desa',
+                        'Pendapatan'  => 'Pendapatan Desa',
+                        'Belanja'     => 'Belanja Desa',
+                        'Pembiayaan'  => 'Pembiayaan Desa (SILPA Tahun Lalu & Penerimaan Pembiayaan)',
                     ])
+                    ->helperText('Kategori "Pembiayaan" digunakan untuk mencatat SILPA dari tahun anggaran sebelumnya dan penerimaan/pengeluaran pembiayaan lainnya.')
                     ->required(),
                 TextInput::make('title')
                     ->label('Uraian / Rincian Pos Anggaran')
@@ -34,13 +35,12 @@ class BudgetTransparencyForm
                     ->numeric()
                     ->prefix('Rp')
                     ->required(),
-                FileUpload::make('pdf_file')
-                    ->label('Dokumen Lampiran PDF Laporan Resmi')
-                    ->directory('budget-pdfs')
-                    ->acceptedFileTypes(['application/pdf'])
-                    ->columnSpanFull(),
                 Textarea::make('notes')
                     ->label('Catatan Keterangan Tambahan')
+                    ->columnSpanFull(),
+                Placeholder::make('doc_info')
+                    ->label('')
+                    ->content('💡 Untuk melampirkan dokumen PDF laporan, gunakan tombol "Atur Dokumen Laporan" di halaman daftar Transparansi APBDES.')
                     ->columnSpanFull(),
             ]);
     }

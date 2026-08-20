@@ -11,10 +11,10 @@ class Apparatus extends Model
 
     protected $guarded = [];
 
-    public function getImageUrlAttribute(): string
+    public function getImageUrlAttribute(): ?string
     {
         if (empty($this->photo)) {
-            return 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=500&q=80';
+            return null;
         }
 
         if (str_starts_with($this->photo, 'http://') || str_starts_with($this->photo, 'https://')) {

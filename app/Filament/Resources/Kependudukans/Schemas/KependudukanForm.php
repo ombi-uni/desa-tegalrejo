@@ -2,10 +2,13 @@
 
 namespace App\Filament\Resources\Kependudukans\Schemas;
 
+use App\Helpers\OccupationStyleHelper;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\HtmlString;
 
 class KependudukanForm
 {
@@ -139,11 +142,33 @@ class KependudukanForm
                                 TextInput::make('label')
                                     ->label('Jenis Pekerjaan')
                                     ->placeholder('mis. Petani / Buruh Tani')
+                                    ->live(debounce: 400)
                                     ->required(),
                                 TextInput::make('count')
                                     ->label('Jumlah (Jiwa)')
                                     ->numeric()
                                     ->required(),
+                                Placeholder::make('icon_preview')
+                                    ->label('🤖 Preview Icon (otomatis)')
+                                    ->content(function ($get) {
+                                        $label = $get('label');
+                                        if (empty(trim($label ?? ''))) {
+                                            return new HtmlString('<span class="text-xs text-slate-400 italic">Ketik nama pekerjaan untuk melihat preview icon…</span>');
+                                        }
+                                        $style = OccupationStyleHelper::getStyle($label);
+                                        $icon  = $style['icon'];
+                                        $bg    = $style['bg'];
+                                        $tc    = $style['tc'];
+                                        return new HtmlString(
+                                            '<div class="flex items-center gap-3">'
+                                            . '<span class="inline-flex items-center justify-center w-10 h-10 rounded-xl ' . $bg . ' ' . $tc . ' text-lg">'
+                                            . '<i class="fa-solid ' . $icon . '"></i>'
+                                            . '</span>'
+                                            . '<span class="text-xs text-slate-500">Icon <code class="bg-slate-100 px-1 py-0.5 rounded font-mono">' . $icon . '</code> akan tampil di halaman Kependudukan</span>'
+                                            . '</div>'
+                                        );
+                                    })
+                                    ->columnSpanFull(),
                             ])
                             ->columns(2)
                             ->defaultItems(0)

@@ -53,7 +53,17 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 <div class="lg:col-span-4 text-center lg:text-left space-y-4">
                     <div class="relative w-48 h-48 sm:w-60 sm:h-60 mx-auto lg:mx-0 rounded-3xl overflow-hidden shadow-xl border-4 border-lightblue-100">
-                        <img src="{{ !empty($profile->kades_photo) ? (str_starts_with($profile->kades_photo, 'http') ? $profile->kades_photo : asset('storage/' . $profile->kades_photo)) : 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80' }}" alt="{{ $profile->kades_name }}" class="w-full h-full object-cover">
+                        @if(!empty($profile->kades_photo))
+                            <img src="{{ str_starts_with($profile->kades_photo, 'http') ? $profile->kades_photo : asset('storage/' . $profile->kades_photo) }}" alt="{{ $profile->kades_name }}" class="w-full h-full object-cover">
+                        @else
+                            {{-- WhatsApp-style placeholder --}}
+                            <div class="w-full h-full flex items-end justify-center bg-gradient-to-b from-slate-300 to-slate-400 overflow-hidden">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-[75%] text-white fill-white opacity-90">
+                                    <circle cx="50" cy="35" r="22"/>
+                                    <ellipse cx="50" cy="95" rx="40" ry="30"/>
+                                </svg>
+                            </div>
+                        @endif
                     </div>
                     <div>
                         <h3 class="text-xl font-bold text-slate-900">{{ $profile->kades_name ?? 'Bpk. H. Ahmad Slamet, S.Sos.' }}</h3>
@@ -84,7 +94,17 @@
             @foreach($apparatuses as $app)
             <div class="bg-brokenwhite rounded-2xl p-4 sm:p-5 border border-slate-200/70 shadow-md hover:shadow-xl hover:border-lightblue-300 transition-all text-center space-y-4 group">
                 <div class="w-full aspect-[4/5] max-w-[240px] mx-auto rounded-2xl overflow-hidden border-4 border-white shadow-md group-hover:shadow-lg transition-all duration-300">
-                    <img src="{{ $app->image_url }}" alt="{{ $app->name }}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                    @if($app->image_url)
+                        <img src="{{ $app->image_url }}" alt="{{ $app->name }}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                    @else
+                        {{-- WhatsApp-style placeholder: grey gradient + white person silhouette --}}
+                        <div class="w-full h-full flex items-end justify-center bg-gradient-to-b from-slate-300 to-slate-400 overflow-hidden">
+                            <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" class="w-[72%] fill-white opacity-90 group-hover:scale-105 transition-transform duration-500">
+                                <circle cx="50" cy="38" r="25"/>
+                                <ellipse cx="50" cy="110" rx="44" ry="32"/>
+                            </svg>
+                        </div>
+                    @endif
                 </div>
                 <div>
                     <h3 class="font-bold text-lg text-slate-900 group-hover:text-lightblue-600 transition-colors px-2 truncate" title="{{ $app->name }}">{{ $app->name }}</h3>

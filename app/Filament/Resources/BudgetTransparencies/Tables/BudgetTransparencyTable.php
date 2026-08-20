@@ -18,7 +18,6 @@ class BudgetTransparencyTable
                 TextColumn::make('category')->label('Kategori')->badge(),
                 TextColumn::make('title')->label('Pos Anggaran')->searchable(),
                 TextColumn::make('amount')->label('Nominal')->money('IDR')->sortable(),
-                TextColumn::make('pdf_file')->label('Dokumen PDF')->formatStateUsing(fn ($state) => $state ? 'Ada PDF' : 'Tidak Ada'),
             ])
             ->filters([
                 //

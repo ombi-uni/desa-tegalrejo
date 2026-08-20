@@ -53,6 +53,31 @@ class ListBanners extends ListRecords
                         ->visibility('public')
                         ->directory('page-banners')
                         ->helperText('Gambar latar header halaman Transparansi Anggaran APBDES.'),
+                    FileUpload::make('kependudukan_banner_image')
+                        ->label('Banner Header Halaman: Kependudukan')
+                        ->image()
+                        ->disk('public')
+                        ->visibility('public')
+                        ->directory('page-banners')
+                        ->helperText('Gambar latar header halaman Kependudukan dan Statistik.'),
+                    FileUpload::make('pendapatan_doc')
+                        ->label('📄 Dokumen PDF: Laporan Pendapatan Desa')
+                        ->acceptedFileTypes(['application/pdf'])
+                        ->disk('local')
+                        ->directory('budget-docs')
+                        ->helperText('Satu file PDF laporan resmi yang mencakup semua item Pendapatan Desa. Tampil sebagai tombol unduh di tabel Pendapatan.'),
+                    FileUpload::make('belanja_doc')
+                        ->label('📄 Dokumen PDF: Laporan Belanja Desa')
+                        ->acceptedFileTypes(['application/pdf'])
+                        ->disk('local')
+                        ->directory('budget-docs')
+                        ->helperText('Satu file PDF laporan resmi yang mencakup semua item Belanja Desa. Tampil sebagai tombol unduh di tabel Belanja.'),
+                    FileUpload::make('pembiayaan_doc')
+                        ->label('📄 Dokumen PDF: Laporan Pembiayaan / SILPA Desa')
+                        ->acceptedFileTypes(['application/pdf'])
+                        ->disk('local')
+                        ->directory('budget-docs')
+                        ->helperText('Satu file PDF laporan resmi yang mencakup Pembiayaan Desa / SILPA.'),
                 ])
                 ->fillForm(function () {
                     $profile = VillageProfile::first();
@@ -61,6 +86,10 @@ class ListBanners extends ListRecords
                         'news_banner_image' => $profile?->news_banner_image,
                         'umkm_banner_image' => $profile?->umkm_banner_image,
                         'budget_banner_image' => $profile?->budget_banner_image,
+                        'kependudukan_banner_image' => $profile?->kependudukan_banner_image,
+                        'pendapatan_doc'           => $profile?->pendapatan_doc,
+                        'belanja_doc'              => $profile?->belanja_doc,
+                        'pembiayaan_doc'           => $profile?->pembiayaan_doc,
                     ];
                 })
                 ->action(function (array $data) {
@@ -70,6 +99,10 @@ class ListBanners extends ListRecords
                         'news_banner_image' => $data['news_banner_image'] ?? null,
                         'umkm_banner_image' => $data['umkm_banner_image'] ?? null,
                         'budget_banner_image' => $data['budget_banner_image'] ?? null,
+                        'kependudukan_banner_image' => $data['kependudukan_banner_image'] ?? null,
+                        'pendapatan_doc'           => $data['pendapatan_doc'] ?? null,
+                        'belanja_doc'              => $data['belanja_doc'] ?? null,
+                        'pembiayaan_doc'           => $data['pembiayaan_doc'] ?? null,
                     ]);
 
                     Notification::make()

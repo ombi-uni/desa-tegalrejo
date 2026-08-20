@@ -5,6 +5,7 @@
 @section('content')
 
 @php
+    use App\Helpers\OccupationStyleHelper;
     $s = $statistic;
     $population  = (int)($s->population_count  ?? 0);
     $male        = (int)($s->male_count         ?? 0);
@@ -78,10 +79,17 @@
 {{-- HERO BANNER                                        --}}
 {{-- ══════════════════════════════════════════════════ --}}
 <section class="relative bg-slate-950 text-white overflow-hidden">
-    {{-- Decorative grid pattern --}}
-    <div class="absolute inset-0 opacity-[0.04]" style="background-image: url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\");"></div>
+    @if(!empty($villageProfile->kependudukan_banner_url ?? null))
+    <div class="absolute inset-0 z-0">
+        <img src="{{ $villageProfile->kependudukan_banner_url }}" alt="Banner Statistik Kependudukan" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-[2px]"></div>
+    </div>
+    @else
+    {{-- Decorative grid pattern fallback --}}
+    <div class="absolute inset-0 opacity-[0.04] z-0" style="background-image: url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\");"></div>
+    @endif
     {{-- Blue gradient accent --}}
-    <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-lightblue-900/30 to-transparent pointer-events-none"></div>
+    <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-lightblue-900/30 to-transparent pointer-events-none z-0"></div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
@@ -216,11 +224,12 @@
                     <div class="space-y-1.5">
                         <div class="flex justify-between items-center text-sm font-bold">
                             <span class="flex items-center gap-1.5 text-sky-700"><i class="fa-solid fa-person text-sky-500 text-base"></i> Laki-laki</span>
-                            <span class="text-sky-600">{{ number_format($male) }} jiwa ({{ $malePercent }}%)</span>
+                            <span class="text-sky-600">{{ number_format($male) }} jiwa</span>
                         </div>
-                        <div class="h-4 bg-sky-100 rounded-full overflow-hidden">
-                            <div x-data="{ w: 0 }" x-init="setTimeout(() => w = {{ $maleWidth }}, 300)"
-                                 :style="'width:' + w + '%'"
+                        <div class="h-4 bg-sky-100 rounded-full overflow-hidden"
+                             x-data="{ w: 0, bar: {{ $maleWidth }} }"
+                             x-init="let obs = new IntersectionObserver((e) => { if(e[0].isIntersecting) { setTimeout(() => w = bar, 100); obs.disconnect(); } }, {threshold:0.2}); obs.observe($el);">
+                            <div :style="'width:' + w + '%'"
                                  class="h-full bg-gradient-to-r from-sky-400 to-sky-600 rounded-full transition-all duration-1000 ease-out"></div>
                         </div>
                     </div>
@@ -228,11 +237,12 @@
                     <div class="space-y-1.5">
                         <div class="flex justify-between items-center text-sm font-bold">
                             <span class="flex items-center gap-1.5 text-pink-700"><i class="fa-solid fa-person-dress text-pink-500 text-base"></i> Perempuan</span>
-                            <span class="text-pink-600">{{ number_format($female) }} jiwa ({{ $femalePercent }}%)</span>
+                            <span class="text-pink-600">{{ number_format($female) }} jiwa</span>
                         </div>
-                        <div class="h-4 bg-pink-100 rounded-full overflow-hidden">
-                            <div x-data="{ w: 0 }" x-init="setTimeout(() => w = {{ $femaleWidth }}, 600)"
-                                 :style="'width:' + w + '%'"
+                        <div class="h-4 bg-pink-100 rounded-full overflow-hidden"
+                             x-data="{ w: 0, bar: {{ $femaleWidth }} }"
+                             x-init="let obs = new IntersectionObserver((e) => { if(e[0].isIntersecting) { setTimeout(() => w = bar, 200); obs.disconnect(); } }, {threshold:0.2}); obs.observe($el);">
+                            <div :style="'width:' + w + '%'"
                                  class="h-full bg-gradient-to-r from-pink-400 to-pink-600 rounded-full transition-all duration-1000 ease-out"></div>
                         </div>
                     </div>
@@ -264,19 +274,17 @@
                 <div class="space-y-3.5">
                     @php $maxHamlet = collect($hamlets)->max('count'); @endphp
                     @foreach($hamlets as $idx => $hamlet)
-                    @php
-                        $pct = $maxHamlet > 0 ? round(($hamlet['count'] / $maxHamlet) * 100) : 0;
-                        $popPct = $totalHamlets > 0 ? round(($hamlet['count'] / $totalHamlets) * 100, 1) : 0;
-                    @endphp
-                    <div x-data="{ w: 0 }" x-init="setTimeout(() => w = {{ $pct }}, {{ 200 + $idx * 100 }})" class="space-y-1">
+                    @php $pct = $maxHamlet > 0 ? round(($hamlet['count'] / $maxHamlet) * 100) : 0; @endphp
+                    <div x-data="{ w: 0, bar: {{ $pct }} }"
+                         x-init="$nextTick(() => { let obs = new IntersectionObserver((e) => { if(e[0].isIntersecting) { setTimeout(() => w = bar, {{ 100 + $idx * 100 }}); obs.disconnect(); } }, {threshold:0}); obs.observe($el); });"
+                         class="space-y-1">
                         <div class="flex justify-between items-center text-sm">
                             <span class="font-bold text-slate-800 truncate max-w-[55%]">{{ $hamlet['label'] }}</span>
-                            <span class="font-black text-lightblue-700 shrink-0 text-sm">{{ number_format($hamlet['count']) }} jiwa <span class="text-slate-400 font-normal text-xs">({{ $popPct }}%)</span></span>
+                            <span class="font-black text-lightblue-700 shrink-0 text-sm">{{ number_format($hamlet['count']) }} jiwa</span>
                         </div>
                         <div class="h-3.5 bg-slate-100 rounded-full overflow-hidden">
-                            <div :style="'width:' + w + '%'"
-                                 class="h-full rounded-full transition-all duration-1000 ease-out"
-                                 style="background: linear-gradient(90deg, #0ea5e9, #0284c7);"></div>
+                            <div class="h-full rounded-full bg-gradient-to-r from-sky-400 to-blue-600 transition-all duration-1000 ease-out"
+                                 :style="{ width: w + '%' }"></div>
                         </div>
                     </div>
                     @endforeach
@@ -314,17 +322,19 @@
                 <div class="space-y-3.5">
                     @foreach($religions as $idx => $rel)
                     @php
-                        $relPct = $totalReligions > 0 ? round(($rel['count'] / $totalReligions) * 100, 1) : 0;
+                        $relPct = $totalReligions > 0 ? round(($rel['count'] / $totalReligions) * 100) : 0;
                         $colorGrad = $religionColors[$idx % count($religionColors)];
                         $colorBg   = $religionBgs[$idx % count($religionBgs)];
                     @endphp
-                    <div x-data="{ w: 0 }" x-init="setTimeout(() => w = {{ $relPct }}, {{ 150 + $idx * 120 }})" class="space-y-1.5">
+                    <div x-data="{ w: 0, bar: {{ $relPct }} }"
+                         x-init="let obs = new IntersectionObserver((e) => { if(e[0].isIntersecting) { setTimeout(() => w = bar, {{ 100 + $idx * 120 }}); obs.disconnect(); } }, {threshold:0.2}); obs.observe($el);"
+                         class="space-y-1.5">
                         <div class="flex justify-between items-center">
                             <span class="inline-flex items-center gap-2 text-sm font-bold text-slate-800">
                                 <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-br {{ $colorGrad }} shadow-sm"></span>
                                 {{ $rel['label'] }}
                             </span>
-                            <span class="text-xs font-black text-slate-700">{{ number_format($rel['count']) }} jiwa &nbsp;<span class="font-semibold text-slate-400">({{ $relPct }}%)</span></span>
+                            <span class="text-xs font-black text-slate-700">{{ number_format($rel['count']) }} jiwa</span>
                         </div>
                         <div class="h-3 bg-slate-100 rounded-full overflow-hidden">
                             <div :style="'width:' + w + '%'"
@@ -359,14 +369,15 @@
                     @foreach($educations as $idx => $edu)
                     @php
                         $eduPct     = $maxEdu > 0 ? round(($edu['count'] / $maxEdu) * 100) : 0;
-                        $eduRealPct = $totalEducation > 0 ? round(($edu['count'] / $totalEducation) * 100, 1) : 0;
                         $eduColors  = ['from-lightblue-400 to-lightblue-600', 'from-sky-400 to-blue-600', 'from-indigo-400 to-indigo-600', 'from-violet-400 to-violet-600', 'from-purple-400 to-purple-600', 'from-teal-400 to-teal-600', 'from-cyan-400 to-cyan-600'];
                         $ec = $eduColors[$idx % count($eduColors)];
                     @endphp
-                    <div x-data="{ w: 0 }" x-init="setTimeout(() => w = {{ $eduPct }}, {{ 200 + $idx * 100 }})" class="space-y-1">
+                    <div x-data="{ w: 0, bar: {{ $eduPct }} }"
+                         x-init="let obs = new IntersectionObserver((e) => { if(e[0].isIntersecting) { setTimeout(() => w = bar, {{ 100 + $idx * 100 }}); obs.disconnect(); } }, {threshold:0.2}); obs.observe($el);"
+                         class="space-y-1">
                         <div class="flex justify-between items-center text-sm">
-                            <span class="font-bold text-slate-800 truncate max-w-[60%]">{{ $edu['label'] }}</span>
-                            <span class="font-black text-slate-700 shrink-0">{{ number_format($edu['count']) }} <span class="text-slate-400 font-normal text-xs">({{ $eduRealPct }}%)</span></span>
+                            <span class="font-bold text-slate-800 truncate max-w-[65%]">{{ $edu['label'] }}</span>
+                            <span class="font-black text-slate-700 shrink-0">{{ number_format($edu['count']) }}</span>
                         </div>
                         <div class="h-3 bg-slate-100 rounded-full overflow-hidden">
                             <div :style="'width:' + w + '%'"
@@ -408,7 +419,6 @@
                 @foreach($ageGroups as $idx => $age)
                 @php
                     $agePct     = $maxAge > 0 ? round(($age['count'] / $maxAge) * 100) : 0;
-                    $ageRealPct = $totalAge > 0 ? round(($age['count'] / $totalAge) * 100, 1) : 0;
                     $acolor     = $ageColors[$idx % count($ageColors)];
                     $aicon      = $ageIcons[$idx % count($ageIcons)];
                     $atc        = $ageTextColor[$idx % count($ageTextColor)];
@@ -421,14 +431,14 @@
                         </div>
                         <div class="min-w-0">
                             <div class="text-sm font-bold text-slate-800 truncate">{{ $age['label'] }}</div>
-                            <div class="text-xs text-slate-500">{{ $ageRealPct }}% dari total</div>
                         </div>
                     </div>
                     <div class="text-2xl font-black {{ $atc }}">
                         {{ number_format($age['count']) }}
                         <span class="text-sm font-semibold text-slate-500">jiwa</span>
                     </div>
-                    <div x-data="{ w: 0 }" x-init="setTimeout(() => w = {{ $agePct }}, {{ 200 + $idx * 120 }})">
+                    <div x-data="{ w: 0, bar: {{ $agePct }} }"
+                         x-init="let obs = new IntersectionObserver((e) => { if(e[0].isIntersecting) { setTimeout(() => w = bar, {{ 100 + $idx * 120 }}); obs.disconnect(); } }, {threshold:0.2}); obs.observe($el);">
                         <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
                             <div :style="'width:' + w + '%'"
                                  class="h-full rounded-full {{ $acolor }} transition-all duration-1000 ease-out"></div>
@@ -455,52 +465,21 @@
 
             @php $maxOcc = collect($occupations)->max('count'); @endphp
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                @php
-                    if(!function_exists('getOccupationStyle')) {
-                        function getOccupationStyle($label) {
-                            $label = strtolower($label);
-                            if (str_contains($label, 'tani') || str_contains($label, 'kebun')) return ['icon' => 'fa-tractor', 'grad' => 'from-lime-400 to-green-500', 'bg' => 'bg-lime-50', 'tc' => 'text-lime-700'];
-                            if (str_contains($label, 'dagang') || str_contains($label, 'jual') || str_contains($label, 'wiraswasta') || str_contains($label, 'usaha')) return ['icon' => 'fa-store', 'grad' => 'from-blue-400 to-blue-500', 'bg' => 'bg-blue-50', 'tc' => 'text-blue-700'];
-                            if (str_contains($label, 'guru') || str_contains($label, 'dosen') || str_contains($label, 'pengajar')) return ['icon' => 'fa-chalkboard-user', 'grad' => 'from-violet-400 to-purple-500', 'bg' => 'bg-violet-50', 'tc' => 'text-violet-700'];
-                            if (str_contains($label, 'pelajar') || str_contains($label, 'mahasiswa') || str_contains($label, 'sekolah')) return ['icon' => 'fa-graduation-cap', 'grad' => 'from-sky-400 to-sky-500', 'bg' => 'bg-sky-50', 'tc' => 'text-sky-700'];
-                            if (str_contains($label, 'medis') || str_contains($label, 'dokter') || str_contains($label, 'perawat') || str_contains($label, 'bidan')) return ['icon' => 'fa-user-nurse', 'grad' => 'from-rose-400 to-rose-500', 'bg' => 'bg-rose-50', 'tc' => 'text-rose-700'];
-                            if (str_contains($label, 'pns') || str_contains($label, 'aparatur') || str_contains($label, 'pegawai negeri') || str_contains($label, 'pemerintah') || str_contains($label, 'perangkat')) return ['icon' => 'fa-building-user', 'grad' => 'from-indigo-400 to-indigo-500', 'bg' => 'bg-indigo-50', 'tc' => 'text-indigo-700'];
-                            if (str_contains($label, 'tni') || str_contains($label, 'polri') || str_contains($label, 'polisi') || str_contains($label, 'tentara')) return ['icon' => 'fa-shield-halved', 'grad' => 'from-emerald-400 to-emerald-500', 'bg' => 'bg-emerald-50', 'tc' => 'text-emerald-700'];
-                            if (str_contains($label, 'karyawan') || str_contains($label, 'swasta')) return ['icon' => 'fa-user-tie', 'grad' => 'from-slate-400 to-slate-500', 'bg' => 'bg-slate-50', 'tc' => 'text-slate-700'];
-                            if (str_contains($label, 'buruh') || str_contains($label, 'tukang') || str_contains($label, 'pekerja')) return ['icon' => 'fa-hammer', 'grad' => 'from-amber-400 to-amber-500', 'bg' => 'bg-amber-50', 'tc' => 'text-amber-700'];
-                            if (str_contains($label, 'pensiun')) return ['icon' => 'fa-user-clock', 'grad' => 'from-slate-400 to-slate-600', 'bg' => 'bg-slate-100', 'tc' => 'text-slate-600'];
-                            if (str_contains($label, 'ibu rumah tangga') || str_contains($label, 'irt')) return ['icon' => 'fa-house-user', 'grad' => 'from-pink-400 to-pink-500', 'bg' => 'bg-pink-50', 'tc' => 'text-pink-700'];
-                            if (str_contains($label, 'belum') || str_contains($label, 'tidak bekerja') || str_contains($label, 'penganggur')) return ['icon' => 'fa-user-xmark', 'grad' => 'from-red-400 to-red-500', 'bg' => 'bg-red-50', 'tc' => 'text-red-700'];
-                            if (str_contains($label, 'sopir') || str_contains($label, 'pengemudi')) return ['icon' => 'fa-truck-fast', 'grad' => 'from-orange-400 to-orange-500', 'bg' => 'bg-orange-50', 'tc' => 'text-orange-700'];
-                            if (str_contains($label, 'asisten') || str_contains($label, 'art')) return ['icon' => 'fa-broom', 'grad' => 'from-teal-400 to-teal-500', 'bg' => 'bg-teal-50', 'tc' => 'text-teal-700'];
-                            
-                            $defaults = [
-                                ['icon' => 'fa-briefcase', 'grad' => 'from-cyan-400 to-cyan-500', 'bg' => 'bg-cyan-50', 'tc' => 'text-cyan-700'],
-                                ['icon' => 'fa-id-card', 'grad' => 'from-fuchsia-400 to-fuchsia-500', 'bg' => 'bg-fuchsia-50', 'tc' => 'text-fuchsia-700'],
-                                ['icon' => 'fa-user-tag', 'grad' => 'from-zinc-400 to-zinc-500', 'bg' => 'bg-zinc-50', 'tc' => 'text-zinc-700'],
-                            ];
-                            return $defaults[abs(crc32($label)) % count($defaults)];
-                        }
-                    }
-                @endphp
+                @php @endphp
                 @foreach($occupations as $idx => $occ)
                 @php
-                    $occPct     = $maxOcc > 0 ? round(($occ['count'] / $maxOcc) * 100) : 0;
-                    $occRealPct = $totalOccupation > 0 ? round(($occ['count'] / $totalOccupation) * 100, 1) : 0;
-                    $oc         = getOccupationStyle($occ['label']);
+                    $occPct = $maxOcc > 0 ? round(($occ['count'] / $maxOcc) * 100) : 0;
+                    $oc     = OccupationStyleHelper::getStyle($occ['label']);
                 @endphp
                 <div x-data="{ w: 0, bar: {{ $occPct }} }"
                      x-init="let obs = new IntersectionObserver((e) => { if(e[0].isIntersecting) { setTimeout(() => w = bar, {{ 100 + $idx * 80 }}); } }, {threshold:0.2}); obs.observe($el);"
                      class="p-5 rounded-2xl border border-slate-100 bg-slate-50/60 space-y-3 hover:shadow-md hover:border-slate-200 transition-all">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2.5">
+                    <div class="flex items-center gap-2.5">
                             <div class="w-9 h-9 {{ $oc['bg'] }} {{ $oc['tc'] }} rounded-xl flex items-center justify-center text-sm">
                                 <i class="fa-solid {{ $oc['icon'] }}"></i>
                             </div>
                             <span class="text-sm font-bold text-slate-800 leading-tight">{{ $occ['label'] }}</span>
                         </div>
-                        <span class="text-xs font-bold text-slate-500 shrink-0 ml-2">{{ $occRealPct }}%</span>
-                    </div>
                     <div class="flex items-end justify-between gap-3">
                         <div class="h-2 flex-1 bg-slate-200 rounded-full overflow-hidden">
                             <div :style="'width:' + w + '%'"
