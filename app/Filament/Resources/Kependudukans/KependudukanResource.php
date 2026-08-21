@@ -23,7 +23,7 @@ class KependudukanResource extends Resource
 
     protected static ?string $modelLabel = 'Data Kependudukan';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Data Kependudukan';
+    protected static string|\UnitEnum|null $navigationGroup = 'DATA & STATISTIK';
 
     protected static ?int $navigationSort = 1;
 

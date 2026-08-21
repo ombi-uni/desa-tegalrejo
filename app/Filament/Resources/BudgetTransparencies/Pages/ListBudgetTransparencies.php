@@ -9,6 +9,8 @@ use Filament\Actions\CreateAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Components\Tabs\Tab;
+use Illuminate\Database\Eloquent\Builder;
 
 class ListBudgetTransparencies extends ListRecords
 {
@@ -18,9 +20,8 @@ class ListBudgetTransparencies extends ListRecords
     {
         return [
             Action::make('atur_dokumen')
-                ->label('📄 Atur Dokumen Laporan')
+                ->label('Atur Dokumen Laporan')
                 ->color('info')
-                ->icon('heroicon-o-document-arrow-up')
                 ->modalHeading('Atur Dokumen PDF Laporan APBDES')
                 ->modalDescription('Unggah satu file PDF resmi per kategori anggaran. Dokumen akan tampil sebagai tombol "Unduh Laporan PDF" di header tabel pada halaman Transparansi.')
                 ->modalWidth('lg')
@@ -57,7 +58,20 @@ class ListBudgetTransparencies extends ListRecords
                         ->send();
                 }),
 
-            CreateAction::make(),
+            CreateAction::make()->label('+ Transparansi'),
+        ];
+    }
+
+    public function getTabs(): array
+    {
+        return [
+            'Semua Data' => Tab::make(),
+            'Pendapatan Desa' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('category', 'Pendapatan')),
+            'Belanja Desa' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('category', 'Belanja')),
+            'Pembiayaan Desa' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('category', 'Pembiayaan')),
         ];
     }
 }

@@ -18,7 +18,7 @@ class ListBanners extends ListRecords
     {
         return [
             Action::make('page_header_banners')
-                ->label('🖼️ Atur Banner Header Halaman')
+                ->label('Atur Banner Header Halaman')
                 ->color('info')
                 ->modalHeading('Pengaturan Banner Header Setiap Halaman')
                 ->modalDescription('Unggah dan atur gambar latar belakang header (banner) untuk masing-masing halaman website agar tampil estetik.')
@@ -112,7 +112,7 @@ class ListBanners extends ListRecords
                 }),
 
             CreateAction::make()
-                ->label('New Hero Banner'),
+                ->label('+ Hero Banner'),
         ];
     }
 }

@@ -24,6 +24,8 @@ class ApparatusResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Perangkat Desa';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'PENGATURAN';
+
     public static function form(Schema $schema): Schema
     {
         return ApparatusForm::configure($schema);

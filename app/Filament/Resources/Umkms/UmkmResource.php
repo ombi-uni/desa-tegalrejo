@@ -25,6 +25,8 @@ class UmkmResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Data UMKM Desa';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'INFORMASI';
+
     // ─── Scoping: dusun_admin hanya lihat UMKM dusunnya ─────────────────────
 
     public static function getEloquentQuery(): Builder

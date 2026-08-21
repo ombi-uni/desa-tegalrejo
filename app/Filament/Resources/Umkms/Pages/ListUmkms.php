@@ -18,10 +18,9 @@ class ListUmkms extends ListRecords
     {
         return [
             Action::make('manage_featured_umkms')
-                ->label('⭐ Atur 4 UMKM Beranda')
-                ->icon('heroicon-o-sparkles')
+                ->label('Atur 4 UMKM Beranda')
                 ->color('primary')
-                ->modalHeading('⭐ Atur & Tukar Posisi 4 UMKM di Beranda')
+                ->modalHeading(' Atur & Tukar Posisi 4 UMKM di Beranda')
                 ->modalSubmitActionLabel('Simpan & Terapkan di Beranda')
                 ->modalDescription('Pilih UMKM untuk mengisi masing-masing slot posisi (Slot 1 sampai Slot 4) yang ditampilkan pada Halaman Beranda. Anda dapat menukar posisi toko dengan mudah di sini.')
                 ->fillForm(function () {
@@ -85,7 +84,7 @@ class ListUmkms extends ListRecords
                         ->send();
                 }),
 
-            CreateAction::make(),
+            CreateAction::make()->label('+ UMKM'),
         ];
     }
 }

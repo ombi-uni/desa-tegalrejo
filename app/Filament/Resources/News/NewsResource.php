@@ -25,6 +25,8 @@ class NewsResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Berita & Kegiatan';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'INFORMASI';
+
     // ─── Scoping: dusun_admin hanya lihat berita dusunnya ────────────────────
 
     public static function getEloquentQuery(): Builder

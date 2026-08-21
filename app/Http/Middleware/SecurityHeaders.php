@@ -12,11 +12,11 @@ class SecurityHeaders
     {
         $response = $next($request);
 
-        $response->headers->set('X-Frame-Options', 'SAMEORIGIN');
-        $response->headers->set('X-Content-Type-Options', 'nosniff');
-        $response->headers->set('X-XSS-Protection', '1; mode=block');
-        $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
-        $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
+        // $response->headers->set('X-Frame-Options', 'SAMEORIGIN');
+        // $response->headers->set('X-Content-Type-Options', 'nosniff');
+        // $response->headers->set('X-XSS-Protection', '1; mode=block');
+        // $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
+        // $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
         /* 
         $viteDev = app()->environment('local') 
             ? "http://localhost:5173 http://127.0.0.1:5173 http://[::1]:5173 ws://localhost:5173 ws://127.0.0.1:5173 ws://[::1]:5173 "

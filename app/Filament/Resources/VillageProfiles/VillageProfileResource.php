@@ -24,6 +24,17 @@ class VillageProfileResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Profil & Visi Misi';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'PENGATURAN';
+
+    public static function getUrl(?string $name = null, array $parameters = [], bool $isAbsolute = true, ?string $panel = null, ?\Illuminate\Database\Eloquent\Model $tenant = null, bool $shouldGuessMissingParameters = false, ?string $configuration = null): string
+    {
+        if ($name === 'index' || $name === null) {
+            $record = VillageProfile::firstOrCreate([]);
+            return static::getUrl('edit', ['record' => $record->id], $isAbsolute, $panel, $tenant, $shouldGuessMissingParameters, $configuration);
+        }
+        return parent::getUrl($name, $parameters, $isAbsolute, $panel, $tenant, $shouldGuessMissingParameters, $configuration);
+    }
+
     public static function form(Schema $schema): Schema
     {
         return VillageProfileForm::configure($schema);
@@ -31,7 +42,7 @@ class VillageProfileResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return VillageProfilesTable::configure($table);
+        return $table->columns([]);
     }
 
     public static function getRelations(): array
@@ -44,8 +55,7 @@ class VillageProfileResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListVillageProfiles::route('/'),
-            'create' => CreateVillageProfile::route('/create'),
+            'index' => EditVillageProfile::route('/edit'),
             'edit' => EditVillageProfile::route('/{record}/edit'),
         ];
     }

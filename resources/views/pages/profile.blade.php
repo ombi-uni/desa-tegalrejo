@@ -28,7 +28,7 @@
                 </div>
                 <h2 class="text-2xl font-bold uppercase tracking-wider text-lightblue-100">Visi Desa</h2>
                 <blockquote class="text-lg sm:text-xl font-medium leading-relaxed italic border-l-4 border-white/40 pl-4">
-                    "{{ $profile->visi ?? 'Terwujudnya Desa Tegalrejo yang Mandiri, Sejahtera, Transparan, Berbudaya, dan Berdaya Saing.' }}"
+                    "{{ strip_tags($profile->visi) ?: 'Terwujudnya Desa Tegalrejo yang Mandiri, Sejahtera, Transparan, Berbudaya, dan Berdaya Saing.' }}"
                 </blockquote>
             </div>
 
@@ -38,8 +38,8 @@
                     <i class="fa-solid fa-bullseye"></i>
                 </div>
                 <h2 class="text-2xl font-bold text-slate-900 uppercase tracking-wider">Misi Desa</h2>
-                <div class="text-slate-700 leading-relaxed space-y-2 font-normal whitespace-pre-line text-sm sm:text-base">
-                    {{ $profile->misi }}
+                <div class="[&_ol]:list-decimal [&_ol]:ml-5 [&_ul]:list-disc [&_ul]:ml-5 [&_li]:mt-1 [&_p]:mb-2 text-slate-700 leading-relaxed space-y-2 font-normal text-sm sm:text-base">
+                    {!! $profile->misi !!}
                 </div>
             </div>
         </div>

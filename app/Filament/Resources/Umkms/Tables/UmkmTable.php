@@ -16,7 +16,7 @@ class UmkmTable
     {
         return $table
             ->columns([
-                ImageColumn::make('image')->label('Foto Produk'),
+                ImageColumn::make('image')->label('Foto Produk')->disk('public'),
                 TextColumn::make('store_name')->label('Nama Toko')->searchable()->sortable(),
                 TextColumn::make('owner_name')->label('Pemilik'),
                 TextColumn::make('category')->label('Kategori')->badge(),

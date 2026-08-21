@@ -15,7 +15,7 @@ class NewsTable
     {
         return $table
             ->columns([
-                ImageColumn::make('thumbnail')->label('Sampul'),
+                ImageColumn::make('thumbnail')->label('Sampul')->disk('public'),
                 TextColumn::make('title')->label('Judul')->searchable()->sortable(),
                 TextColumn::make('category')->label('Kategori')->badge(),
                 TextColumn::make('dusun')->label('Dusun')->badge()->color('info')->default('Desa Tegalrejo'),

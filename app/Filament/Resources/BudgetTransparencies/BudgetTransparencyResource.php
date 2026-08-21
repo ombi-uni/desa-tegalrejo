@@ -24,6 +24,8 @@ class BudgetTransparencyResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Transparansi APBDES';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'DATA & STATISTIK';
+
     public static function form(Schema $schema): Schema
     {
         return BudgetTransparencyForm::configure($schema);

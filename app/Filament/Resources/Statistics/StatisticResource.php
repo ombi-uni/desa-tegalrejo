@@ -25,7 +25,7 @@ class StatisticResource extends Resource
 
     protected static ?string $modelLabel = 'Statistik Beranda';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Data Kependudukan';
+    protected static string|\UnitEnum|null $navigationGroup = 'DATA & STATISTIK';
 
     protected static ?int $navigationSort = 2;
 

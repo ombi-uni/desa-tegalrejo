@@ -71,9 +71,8 @@ class VillageProfileForm
                             ->label('Visi Desa')
                             ->rows(3)
                             ->columnSpanFull(),
-                        Textarea::make('misi')
+                        RichEditor::make('misi')
                             ->label('Misi Desa')
-                            ->rows(6)
                             ->columnSpanFull(),
                     ]),
 

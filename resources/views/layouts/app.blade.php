@@ -146,12 +146,12 @@
                 <div class="space-y-3">
                     <h4 class="text-sm font-bold uppercase tracking-wider text-lightblue-400">Navigasi Utama</h4>
                     <ul class="space-y-2 text-sm text-slate-300">
-                        <li><a href="{{ route('home') }}" class="hover:text-lightblue-400 transition-colors">Beranda Utama</a></li>
-                        <li><a href="{{ route('profile') }}" class="hover:text-lightblue-400 transition-colors">Profil & Perangkat Desa</a></li>
-                        <li><a href="{{ route('news.index') }}" class="hover:text-lightblue-400 transition-colors">Portal Berita Terbaru</a></li>
-                        <li><a href="{{ route('umkm.index') }}" class="hover:text-lightblue-400 transition-colors">Katalog Belanja UMKM</a></li>
+                        <li><a href="{{ route('home') }}" class="hover:text-lightblue-400 transition-colors">Beranda</a></li>
+                        <li><a href="{{ route('profile') }}" class="hover:text-lightblue-400 transition-colors">Profil Desa</a></li>
+                        <li><a href="{{ route('news.index') }}" class="hover:text-lightblue-400 transition-colors">Portal Berita</a></li>
+                        <li><a href="{{ route('kependudukan.index') }}" class="hover:text-lightblue-400 transition-colors">Kependudukan</a></li>
+                        <li><a href="{{ route('umkm.index') }}" class="hover:text-lightblue-400 transition-colors">Belanja UMKM</a></li>
                         <li><a href="{{ route('budget.index') }}" class="hover:text-lightblue-400 transition-colors">Transparansi Anggaran</a></li>
-                        <li><a href="{{ route('kependudukan.index') }}" class="hover:text-lightblue-400 transition-colors">Statistik Kependudukan</a></li>
                     </ul>
                 </div>
 
@@ -180,12 +180,19 @@
                 <p>&copy; {{ date('Y') }} Pemerintah {{ $villageProfile->village_name ?? 'Desa Tegalrejo' }}. Hak Cipta Dilindungi.</p>
                 
                 <div class="flex items-center gap-3">
-                    <p>Program Kerja KKN Mahasiswa &bull; Desa Digital</p>
+                    <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-0.1">
+                            <img src="{{ asset('images/unnes-logo.png') }}" alt="Logo UNNES" class="h-6 w-auto object-contain">
+                            <img src="{{ asset('images/giat-logo.png') }}" alt="Logo GIAT 16" class="h-6 w-auto object-contain">
+                        </div>
+                        <p class="hidden sm:block">Program Kerja KKN UNNES GIAT 16</p>
+                        <p class="sm:hidden text-xs">KKN UNNES GIAT 16</p>
+                    </div>
                     <span class="text-slate-700">|</span>
                     <!-- Subtle Admin Login Access -->
-                    <a href="/admin" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition-all border border-slate-700/60 shadow-sm" title="Akses Khusus Pengelola & Perangkat Desa">
-                        <i class="fa-solid fa-lock text-[10px] text-lightblue-400"></i>
-                        <span>Akses Admin</span>
+                    <a href="/panel-desa" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition-all border border-slate-700/60 shadow-sm" title="Akses Khusus Pengelola & Perangkat Desa">
+                        <i class="fa-solid fa-shield-halved text-xs"></i>
+                        <span class="text-xs font-semibold tracking-wide uppercase">Admin</span>
                     </a>
                 </div>
             </div>

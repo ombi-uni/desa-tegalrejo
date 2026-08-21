@@ -16,7 +16,7 @@ class ApparatusesTable
     {
         return $table
             ->columns([
-                ImageColumn::make('photo')->label('Foto'),
+                ImageColumn::make('photo')->label('Foto')->disk('public'),
                 TextColumn::make('name')->label('Nama Lengkap')->searchable()->sortable(),
                 TextColumn::make('position')->label('Jabatan')->searchable(),
                 TextColumn::make('order_level')->label('Urutan')->sortable(),

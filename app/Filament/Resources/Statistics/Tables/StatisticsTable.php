@@ -25,12 +25,7 @@ class StatisticsTable
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
             ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->toolbarActions([]);
     }
 }

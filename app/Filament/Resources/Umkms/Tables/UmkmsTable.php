@@ -19,6 +19,7 @@ class UmkmsTable
             ->columns([
                 ImageColumn::make('image')
                     ->label('Foto')
+                    ->disk('public')
                     ->circular(false)
                     ->extraImgAttributes(['class' => 'rounded-xl object-cover']),
 
