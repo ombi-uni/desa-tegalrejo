@@ -4,6 +4,7 @@ namespace App\Filament\Resources\News\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -66,7 +67,25 @@ class NewsForm
                                 ->schema([
                                     TextInput::make('author')
                                         ->label('Nama Penulis / Kontributor')
-                                        ->default('Admin Desa Tegalrejo')
+                                        ->default(fn () => auth()->user()->name)
+                                        ->required(),
+                                    Select::make('dusun')
+                                        ->label('Dusun / Wilayah')
+                                        ->options([
+                                            'Dusun Tegalrejo'       => 'Dusun Tegalrejo',
+                                            'Dusun Ngesrep'         => 'Dusun Ngesrep',
+                                            'Dusun Kalisoko Lor'    => 'Dusun Kalisoko Lor',
+                                            'Dusun Kalisoko Kidul'  => 'Dusun Kalisoko Kidul',
+                                            'Dusun Tlatar'          => 'Dusun Tlatar',
+                                            'Dusun Dosowarung'      => 'Dusun Dosowarung',
+                                            'Desa Tegalrejo'        => 'Seluruh Desa Tegalrejo',
+                                        ])
+                                        ->default(fn () => auth()->user()->isDusunAdmin()
+                                            ? auth()->user()->dusun
+                                            : 'Desa Tegalrejo'
+                                        )
+                                        ->disabled(fn () => auth()->user()->isDusunAdmin())
+                                        ->dehydrated()
                                         ->required(),
                                     Select::make('status')
                                         ->label('Status Publikasi')

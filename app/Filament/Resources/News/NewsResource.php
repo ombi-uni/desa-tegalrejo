@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class NewsResource extends Resource
 {
@@ -23,6 +24,20 @@ class NewsResource extends Resource
     protected static ?string $navigationLabel = 'Berita & Kegiatan';
 
     protected static ?string $pluralModelLabel = 'Berita & Kegiatan';
+
+    // ─── Scoping: dusun_admin hanya lihat berita dusunnya ────────────────────
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user  = auth()->user();
+
+        if ($user && $user->isDusunAdmin()) {
+            $query->where('dusun', $user->dusun);
+        }
+
+        return $query;
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -36,17 +51,15 @@ class NewsResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => ListNews::route('/'),
+            'index'  => ListNews::route('/'),
             'create' => CreateNews::route('/create'),
-            'edit' => EditNews::route('/{record}/edit'),
+            'edit'   => EditNews::route('/{record}/edit'),
         ];
     }
 }

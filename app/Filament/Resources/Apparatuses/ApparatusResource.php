@@ -49,4 +49,10 @@ class ApparatusResource extends Resource
             'edit' => EditApparatus::route('/{record}/edit'),
         ];
     }
+
+    // Only super_admin can access this resource
+    public static function canAccess(): bool
+    {
+        return auth()->check() && auth()->user()->isSuperAdmin();
+    }
 }

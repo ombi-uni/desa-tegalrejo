@@ -52,6 +52,24 @@ class UmkmForm
                             ->default('Kuliner')
                             ->required(),
 
+                        Select::make('dusun')
+                            ->label('Dusun Lokasi UMKM')
+                            ->options([
+                                'Dusun Tegalrejo'       => 'Dusun Tegalrejo',
+                                'Dusun Ngesrep'         => 'Dusun Ngesrep',
+                                'Dusun Kalisoko Lor'    => 'Dusun Kalisoko Lor',
+                                'Dusun Kalisoko Kidul'  => 'Dusun Kalisoko Kidul',
+                                'Dusun Tlatar'          => 'Dusun Tlatar',
+                                'Dusun Dosowarung'      => 'Dusun Dosowarung',
+                            ])
+                            ->default(fn () => auth()->user()->isDusunAdmin()
+                                ? auth()->user()->dusun
+                                : null
+                            )
+                            ->disabled(fn () => auth()->user()->isDusunAdmin())
+                            ->dehydrated()
+                            ->placeholder('Pilih dusun lokasi UMKM'),
+
                         TextInput::make('product_name')
                             ->label('Nama Produk Unggulan')
                             ->placeholder('mis. Keripik Singkong Balado & Keripik Pisang')

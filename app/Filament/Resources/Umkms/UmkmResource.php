@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class UmkmResource extends Resource
 {
@@ -23,6 +24,20 @@ class UmkmResource extends Resource
     protected static ?string $navigationLabel = 'Data UMKM Desa';
 
     protected static ?string $pluralModelLabel = 'Data UMKM Desa';
+
+    // ─── Scoping: dusun_admin hanya lihat UMKM dusunnya ─────────────────────
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user  = auth()->user();
+
+        if ($user && $user->isDusunAdmin()) {
+            $query->where('dusun', $user->dusun);
+        }
+
+        return $query;
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -36,17 +51,15 @@ class UmkmResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => ListUmkms::route('/'),
+            'index'  => ListUmkms::route('/'),
             'create' => CreateUmkm::route('/create'),
-            'edit' => EditUmkm::route('/{record}/edit'),
+            'edit'   => EditUmkm::route('/{record}/edit'),
         ];
     }
 }

@@ -18,6 +18,7 @@ class NewsTable
                 ImageColumn::make('thumbnail')->label('Sampul'),
                 TextColumn::make('title')->label('Judul')->searchable()->sortable(),
                 TextColumn::make('category')->label('Kategori')->badge(),
+                TextColumn::make('dusun')->label('Dusun')->badge()->color('info')->default('Desa Tegalrejo'),
                 TextColumn::make('author')->label('Penulis'),
                 TextColumn::make('status')->label('Status')->badge()->color(fn (string $state): string => match ($state) {
                     'published' => 'success',

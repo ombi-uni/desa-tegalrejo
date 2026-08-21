@@ -52,4 +52,10 @@ class StatisticResource extends Resource
             'edit'   => EditStatistic::route('/{record}/edit'),
         ];
     }
+
+    // Only super_admin can access this resource
+    public static function canAccess(): bool
+    {
+        return auth()->check() && auth()->user()->isSuperAdmin();
+    }
 }

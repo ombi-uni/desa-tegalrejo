@@ -26,7 +26,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('panel-desa')
             ->login()
             ->brandName('Panel Admin Desa Tegalrejo')
             ->colors([
